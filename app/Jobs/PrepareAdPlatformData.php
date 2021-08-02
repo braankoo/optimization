@@ -86,7 +86,7 @@ class PrepareAdPlatformData implements ShouldQueue {
         Bus::batch($jobs)
             ->allowFailures(false)
             ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($this->adPlatform);
+                Operator::dropTemporaryTable($adPlatform);
             })
             ->dispatch();
 
