@@ -60,7 +60,7 @@ class Detector implements DetectorInterface {
             $params = array_map(function ($param) {
                 return (array) $param;
             }, $params);
-
+            dd($params);
             $webmaster = array_filter($params, function ($param) {
                 return $param['key'] == 'id';
             });
