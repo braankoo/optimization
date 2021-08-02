@@ -53,7 +53,7 @@ class GetAdGroups implements ShouldQueue {
                 $this->fetchAndStore([]);
                 break;
             case 'google':
-                $this->client->campaigns()->chunk(10, function ($campaigns) {
+                $this->client->campaigns()->chunk(5, function ($campaigns) {
                     $this->fetchAndStore($campaigns->map->id->toArray());
                 });
                 break;
