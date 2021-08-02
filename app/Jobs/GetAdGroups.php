@@ -18,7 +18,7 @@ class GetAdGroups implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
 
-    public int $tries = 1;
+    public int $tries = 5;
 
 
     public array $backoff = [ 30, 60, 120, 360 ];
@@ -53,7 +53,7 @@ class GetAdGroups implements ShouldQueue {
                 $this->fetchAndStore([]);
                 break;
             case 'google':
-                $this->client->campaigns()->chunk(1, function ($campaigns) {
+                $this->client->campaigns()->chunk(500, function ($campaigns) {
                     $this->fetchAndStore($campaigns->map->id->toArray());
                 });
                 break;
