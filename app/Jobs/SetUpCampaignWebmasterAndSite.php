@@ -59,7 +59,13 @@ class SetUpCampaignWebmasterAndSite implements ShouldQueue {
 
                 foreach ( $detector->getWebmaster() as $webmaster )
                 {
-                    $webmaster = Webmaster::on($this->campaign->getConnectionName())->firstOrCreate([ 'name' => $webmaster['name'] ], [ 'device' => $webmaster['device'] ]);
+                    $webmaster = Webmaster::on($this->campaign->getConnectionName())->where('name', '=', $webmaster['name'])->where('device', '=', $webmaster['device'])->first();
+
+                    if (is_null($webmaster))
+                    {
+                        $webmaster = Webmaster::on($this->campaign->getConnectionName())->create([ 'name' => $webmaster['name'], 'device' => $webmaster['device'] ]);
+                    }
+
                     if ($this->campaign->webmasters()->where('id', '=', $webmaster->id)->doesntExist())
                     {
                         $this->campaign->webmasters()->attach($webmaster);
