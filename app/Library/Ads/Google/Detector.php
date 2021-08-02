@@ -57,15 +57,11 @@ class Detector implements DetectorInterface {
         if (!is_null($this->ad->getAd()->getUrlCustomParameters()))
         {
             $params = (array) $this->ad->getAd()->getUrlCustomParameters()->getParameters();
-            $params = array_map(function ($param) {
-                return (array) $param;
-            }, $params);
-            dd($params);
             $webmaster = array_filter($params, function ($param) {
-                return $param['key'] == 'id';
+                return $param->getKey() == 'id';
             });
-
-            return $this->prepareWebmasters(array_values($webmaster[0]));
+            $webmaster = array_values($webmaster);
+            return $this->prepareWebmasters($webmaster[0]->getValue());
         }
 
     }
