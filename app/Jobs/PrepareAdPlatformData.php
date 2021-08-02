@@ -38,11 +38,9 @@ class PrepareAdPlatformData implements ShouldQueue {
      *
      * @return void
      */
-    public function __construct(string $adPlatform, string $startDate, string $endDate)
+    public function __construct(string $adPlatform)
     {
         $this->adPlatform = $adPlatform;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
     }
 
     /**
