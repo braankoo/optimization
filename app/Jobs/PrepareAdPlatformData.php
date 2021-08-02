@@ -67,20 +67,16 @@ class PrepareAdPlatformData implements ShouldQueue {
                     new \App\Jobs\GetCampaigns($client),
                     new \App\Jobs\GetAdGroups($client),
                     new GetAds($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
                 ];
             } else
             {
                 return [
                     new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
+                    new \App\Jobs\GetAdGroups($client)
                 ];
             }
 
         });
-
-
 
 
         Bus::batch($jobs)
