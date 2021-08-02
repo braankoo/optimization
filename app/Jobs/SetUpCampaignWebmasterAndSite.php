@@ -57,13 +57,13 @@ class SetUpCampaignWebmasterAndSite implements ShouldQueue {
 
                 $site = Site::on($this->campaign->getConnectionName())->firstOrCreate([ 'url' => $site ]);
 
-                foreach ( $detector->getWebmaster() as $webmaster )
+                foreach ( $detector->getWebmaster() as $webmasterData )
                 {
-                    $webmaster = Webmaster::on($this->campaign->getConnectionName())->where('name', '=', $webmaster['name'])->where('device', '=', $webmaster['device'])->first();
+                    $webmaster = Webmaster::on($this->campaign->getConnectionName())->where('name', '=', $webmasterData['name'])->where('device', '=', $webmasterData['device'])->first();
 
                     if (is_null($webmaster))
                     {
-                        $webmaster = Webmaster::on($this->campaign->getConnectionName())->create([ 'name' => $webmaster['name'], 'device' => $webmaster['device'] ]);
+                        $webmaster = Webmaster::on($this->campaign->getConnectionName())->create([ 'name' => $webmasterData['name'], 'device' => $webmasterData['device'] ]);
                     }
 
                     if ($this->campaign->webmasters()->where('id', '=', $webmaster->id)->doesntExist())
@@ -71,12 +71,9 @@ class SetUpCampaignWebmasterAndSite implements ShouldQueue {
                         $this->campaign->webmasters()->attach($webmaster);
                     }
 
-                    print_r($webmaster);
-                    echo PHP_EOL;
 
                 }
-                echo PHP_EOL;
-                print_r($site->toArray());
+
 
                 $this->campaign->site_id = $site->id;
 
