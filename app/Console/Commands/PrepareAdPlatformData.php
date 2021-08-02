@@ -2,30 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Events\AdPlatformDataDownloaded;
-use App\Jobs\GetReport;
-use App\Models\Campaign;
-use App\Models\Client;
 use Carbon\Carbon;
-use Illuminate\Bus\Batch;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 
-class PrepareData extends Command {
+class PrepareAdPlatformData extends Command {
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'prepare:data {adPlatform} {--startDate=yesterday} {--endDate=today}';
+    protected $signature = 'prepare:ad-platform-data {adPlatform} {--startDate=yesterday} {--endDate=today}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Prepare Data';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -41,16 +35,17 @@ class PrepareData extends Command {
      * Execute the console command.
      *
      * @return int
-     * @throws \Throwable
      */
-    public function handle(): int
+    public function handle()
     {
-        \App\Jobs\PrepareData::dispatch(
+
+        \App\Jobs\PrepareAdPlatformData::dispatch(
             $this->argument('adPlatform'),
             Carbon::parse($this->option('startDate'))->format('Y-m-d'),
             Carbon::parse($this->option('endDate'))->format('Y-m-d'),
         );
 
         return 0;
+
     }
 }

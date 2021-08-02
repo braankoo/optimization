@@ -6,19 +6,19 @@ use App\Events\AdPlatformDataDownloaded;
 use App\Library\SQL\Operator;
 use App\Models\Client;
 use Illuminate\Bus\Batch;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 
-/**
- *
- */
-class PrepareData implements ShouldQueue {
+class PrepareAdPlatformData implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
 
     /**
      * @var string
@@ -53,11 +53,11 @@ class PrepareData implements ShouldQueue {
      */
     public function handle()
     {
-        $adPlatform = $this->adPlatform;
-        $startDate = $this->startDate;
-        $endDate = $this->endDate;
 
-        Operator::generateTemporaryTables($adPlatform);
+
+        $adPlatform = $this->adPlatform;
+
+        Operator::generateTemporaryTables($this->adPlatform);
 
         $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
 
@@ -81,14 +81,15 @@ class PrepareData implements ShouldQueue {
         });
 
 
+
+
         Bus::batch($jobs)
-            ->then(function (Batch $batch) use ($adPlatform, $startDate, $endDate) {
-                event(new AdPlatformDataDownloaded($adPlatform, $startDate, $endDate));
-            })
             ->allowFailures(false)
             ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($adPlatform);
+                Operator::dropTemporaryTable($this->adPlatform);
             })
             ->dispatch();
+
     }
 }
+

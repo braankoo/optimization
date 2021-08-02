@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\GetCampaigns;
 use App\Console\Commands\GetClients;
+use App\Console\Commands\PrepareAdPlatformData;
 use App\Console\Commands\PrepareData;
 use App\Console\Commands\PrepareWebmastersAndSites;
 use Illuminate\Console\Scheduling\Schedule;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel {
         PrepareData::class,
         PrepareWebmastersAndSites::class,
         GetClients::class,
-        GetCampaigns::class
+        GetCampaigns::class,
+        PrepareAdPlatformData::class
     ];
 
     /**
