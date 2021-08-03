@@ -38,9 +38,11 @@ class PrepareAdPlatformData implements ShouldQueue {
      *
      * @return void
      */
-    public function __construct(string $adPlatform)
+    public function __construct(string $adPlatform, string $startDate, string $endDate)
     {
         $this->adPlatform = $adPlatform;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -65,22 +67,26 @@ class PrepareAdPlatformData implements ShouldQueue {
                     new \App\Jobs\GetCampaigns($client),
                     new \App\Jobs\GetAdGroups($client),
                     new GetAds($client),
+                    new GetReport($client, $this->startDate, $this->endDate)
                 ];
             } else
             {
                 return [
                     new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client)
+                    new \App\Jobs\GetAdGroups($client),
+                    new GetReport($client, $this->startDate, $this->endDate)
                 ];
             }
 
         });
 
 
+
+
         Bus::batch($jobs)
             ->allowFailures(false)
             ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($adPlatform);
+                Operator::dropTemporaryTable($this->adPlatform);
             })
             ->dispatch();
 
