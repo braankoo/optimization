@@ -71,6 +71,7 @@ class GetAffiliateData implements ShouldQueue {
         do
         {
             $response = $this->stats->fetch($this->host, $this->webmaster, $offset, 300);
+            print_r($response);
             if (!empty($response))
             {
                 $data = $this->stats->filter($response);
