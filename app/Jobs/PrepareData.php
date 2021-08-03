@@ -80,6 +80,7 @@ class PrepareData implements ShouldQueue {
 
 
         Bus::batch($jobs)
+            ->allowFailures(false)
             ->then(function (Batch $batch) use ($adPlatform, $startDate, $endDate) {
                 event(new AdPlatformDataDownloaded($adPlatform, $startDate, $endDate));
             })
