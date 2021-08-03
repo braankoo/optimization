@@ -80,7 +80,7 @@ class DownloadAffiliateData implements ShouldQueue {
         })
             ->catch(function (Batch $batch) use ($event) {
 
-            })->dispatch();
+            })->onQueue('affiliate')->dispatch();
     }
 
 
