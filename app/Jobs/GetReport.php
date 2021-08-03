@@ -21,8 +21,14 @@ class GetReport implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    public int $tries = 1;
+    /**
+     * @var int
+     */
+    public int $tries = 3;
 
+    /**
+     * @var int
+     */
     public int $backoff = 0;
     /**
      * @var string
@@ -36,8 +42,16 @@ class GetReport implements ShouldQueue {
      * @var string
      */
     public string $endDate;
-    
-    public $timeout = 120;
+
+    /**
+     * @var int
+     */
+    public int $timeout = 360;
+
+    /**
+     * @var bool
+     */
+    public bool $failOnTimeout = true;
 
     /**
      * Create a new job instance.

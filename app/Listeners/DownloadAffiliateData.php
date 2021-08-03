@@ -15,6 +15,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 
+/**
+ *
+ */
 class DownloadAffiliateData implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -32,12 +35,21 @@ class DownloadAffiliateData implements ShouldQueue {
      * @var int
      */
     public string $startDate;
+    /**
+     * @var string
+     */
     public string $endDate;
 
 
-    public $timeout = 600;
+    /**
+     * @var int
+     */
+    public int $timeout = 600;
 
-    public $failOnTimeout = true;
+    /**
+     * @var bool
+     */
+    public bool $failOnTimeout = true;
 
 
     /**
