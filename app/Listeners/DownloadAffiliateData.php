@@ -76,14 +76,14 @@ class DownloadAffiliateData implements ShouldQueue {
                 })->toArray();
 
             })->values()->flatten()->toArray();
-        
+
         Bus::batch($jobs)->then(function (Batch $batch) use ($event) {
 
             event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
 
         })->allowFailures(false)
             ->catch(function (Batch $batch) use ($event) {
-                Operator::dropTemporaryTable($event->adPlatform);
+
             })->dispatch();
     }
 
