@@ -25,10 +25,9 @@ class DownloadAffiliateData implements ShouldQueue {
     /**
      * The name of the queue the job should be sent to.
      *
-     * @var string
+     * @var string|null
      */
     public $queue = 'listeners';
-
     /**
      * The time (seconds) before the job should be processed.
      *
@@ -39,8 +38,6 @@ class DownloadAffiliateData implements ShouldQueue {
      * @var string
      */
     public string $endDate;
-
-
     /**
      * @var int
      */
@@ -50,6 +47,8 @@ class DownloadAffiliateData implements ShouldQueue {
      * @var bool
      */
     public bool $failOnTimeout = true;
+
+    public $delay = 60;
 
 
     /**
