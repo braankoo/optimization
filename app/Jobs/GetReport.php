@@ -21,9 +21,9 @@ class GetReport implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    public int $tries = 5;
+    public int $tries = 1;
 
-    public array $backoff = [ 30, 60, 120, 360 ];
+    public int $backoff = 0;
     /**
      * @var string
      */
