@@ -36,6 +36,8 @@ class GetReport implements ShouldQueue {
      * @var string
      */
     public string $endDate;
+    
+    public $timeout = 120;
 
     /**
      * Create a new job instance.

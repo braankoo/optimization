@@ -8,17 +8,23 @@ use App\Jobs\GetAffiliateData;
 use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 
 class DownloadAffiliateData implements ShouldQueue {
 
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * The name of the queue the job should be sent to.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $queue = 'listeners';
+    public $queue = 'listeners';
 
     /**
      * The time (seconds) before the job should be processed.
@@ -28,6 +34,10 @@ class DownloadAffiliateData implements ShouldQueue {
     public string $startDate;
     public string $endDate;
 
+
+    public $timeout = 600;
+
+    public $failOnTimeout = true;
 
 
     /**
