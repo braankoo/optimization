@@ -67,11 +67,11 @@ class GetAffiliateData implements ShouldQueue {
         $offset = 0;
         do
         {
-            $response = $this->stats->fetch($this->host, $this->webmaster, $offset, 1000);
+            $response = $this->stats->fetch($this->host, $this->webmaster, $offset, 300);
             if (!empty($response))
             {
                 $data = $this->stats->filter($response);
-                $offset += 1000;
+                $offset += 300;
                 SQLOperator::insertData($this->adPlatform, $data);
             }
 
