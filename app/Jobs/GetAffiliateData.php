@@ -38,6 +38,9 @@ class GetAffiliateData implements ShouldQueue {
      * @var string
      */
     public string $endDate;
+
+    public int $tries = 3;
+
     public string $adPlatform;
 
     /**
