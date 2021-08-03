@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WWN Tube Stats</title>
+    <title>Optimization - First Beat Media</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>

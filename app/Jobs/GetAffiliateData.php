@@ -42,11 +42,13 @@ class GetAffiliateData implements ShouldQueue {
      */
     public string $endDate;
 
-    public int $tries = 5;
+    public int $tries = 1;
 
     public int $backoff = 0;
 
     public string $adPlatform;
+
+    public $maxExceptions = 1;
 
     /**
      * Create a new job instance.
