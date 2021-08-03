@@ -76,7 +76,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
             })->values()->flatten()->toArray();
 
-        Bus::batch($jobs)->allowFailures(false)->then(function (Batch $batch) use ($event) {
+        Bus::batch($jobs)->allowFailures(true)->then(function (Batch $batch) use ($event) {
 
             event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
 
