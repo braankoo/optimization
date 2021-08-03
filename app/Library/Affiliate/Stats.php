@@ -76,7 +76,16 @@ class Stats {
      */
     public function filter(array $stats): array
     {
-        $data = array_filter($stats, function ($row) {
+
+        $data = array_map(function ($row) {
+            if (!array_key_exists('profile', $row))
+            {
+                $row['profile'] = 0;
+            }
+            return $row;
+        }, $stats);
+
+        $data = array_filter($data, function ($row) {
             return $row['profile'] > 0
                 && $row['earned'] > 0
                 && $row['upgrade'] > 0
