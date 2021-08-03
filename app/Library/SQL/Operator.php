@@ -26,7 +26,7 @@ class Operator {
                         created_at date not null,
                         ad_group_id bigint unsigned not null,
                         primary key (ad_group_id, created_at)
-                    ) ENGINE=MEMORY');
+                    ) ENGINE=InnoDB');
 
     }
 
