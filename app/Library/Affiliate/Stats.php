@@ -67,9 +67,14 @@ class Stats {
             )
             ->setOffset($offset)
             ->setLimit($limit)
-            ->setSortBy(['adgroup'])
+            ->setSortBy([ 'adgroup' ])
             ->fetch();
         $data = $this->api->getData();
+
+        if (is_null($data))
+        {
+            return [];
+        }
 
         if (array_key_exists('total_records', $data))
         {
