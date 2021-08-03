@@ -85,7 +85,7 @@ class PrepareData implements ShouldQueue {
             })
             ->allowFailures(false)
             ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($adPlatform);
+
             })
             ->dispatch();
     }
