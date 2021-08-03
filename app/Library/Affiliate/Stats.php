@@ -75,12 +75,12 @@ class Stats {
             throw new \Exception('Failed on:' . $webmaster);
         }
 
-        if (is_array($data))
+        if (array_key_exists('total_records', $data))
         {
-            return $data;
+            return [];
         }
 
-        return [];
+        return $data;
     }
 
     /**
