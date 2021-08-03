@@ -5,6 +5,7 @@ namespace App\Library\Affiliate;
 
 use App\Models\Ad;
 use App\Models\AdGroup;
+use Fbmaff\Api\Exceptions\ApiException;
 use Fbmaff\Client\ApiClient;
 use Fbmaff\Api;
 
@@ -51,6 +52,7 @@ class Stats {
      * @param int $limit
      * @return array|null
      * @throws \Fbmaff\Api\Exceptions\ApiException
+     * @throws \Exception
      */
     public function fetch(string $host, string $webmaster, int $offset, int $limit): ?array
     {
@@ -66,8 +68,19 @@ class Stats {
             ->setOffset($offset)
             ->setLimit($limit)
             ->fetch();
+        $data = $this->api->getData();
 
-        return $this->api->getData();
+        if (!$this->api->success() || !empty(count($this->api->getErrors())))
+        {
+            throw new \Exception('Failed on:' . $webmaster);
+        }
+
+        if (is_array($data))
+        {
+            return $data;
+        }
+
+        return [];
     }
 
     /**
@@ -82,6 +95,7 @@ class Stats {
             {
                 $row['profile'] = 0;
             }
+
             return $row;
         }, $stats);
 
