@@ -41,7 +41,7 @@ class GetAffiliateData implements ShouldQueue {
 
     public int $tries = 5;
 
-    public $backoff = [ 20, 30, 30 ];
+    public $backoff =  20;
 
     public string $adPlatform;
 
