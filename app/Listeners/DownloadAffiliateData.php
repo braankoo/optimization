@@ -69,6 +69,7 @@ class DownloadAffiliateData implements ShouldQueue {
                             $event->adPlatform
                         );
                     }
+
                     return $jobs;
 
                 })->toArray();

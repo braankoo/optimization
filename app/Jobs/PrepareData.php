@@ -90,3 +90,4 @@ class PrepareData implements ShouldQueue {
             ->dispatch();
     }
 }
+

@@ -69,12 +69,7 @@ class Stats {
             ->setLimit($limit)
             ->fetch();
         $data = $this->api->getData();
-
-        if (!$this->api->success() || !empty(count($this->api->getErrors())))
-        {
-            throw new \Exception('Failed on:' . $webmaster);
-        }
-
+        
         if (array_key_exists('total_records', $data))
         {
             return [];
