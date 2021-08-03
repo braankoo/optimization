@@ -80,7 +80,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
             event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
 
-        })->allowFailures(false)
+        })
             ->catch(function (Batch $batch) use ($event) {
 
             })->dispatch();
