@@ -21,7 +21,7 @@ class GetReport implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    public int $tries = 3;
+    public int $tries = 1;
 
     public int $backoff = 0;
     /**
