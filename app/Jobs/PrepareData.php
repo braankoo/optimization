@@ -72,8 +72,6 @@ class PrepareData implements ShouldQueue {
             } else
             {
                 return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
                     new GetReport($client, $this->startDate, $this->endDate)
                 ];
             }
