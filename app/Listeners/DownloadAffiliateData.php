@@ -28,6 +28,8 @@ class DownloadAffiliateData implements ShouldQueue {
     public string $startDate;
     public string $endDate;
 
+
+
     /**
      * Create the event listener.
      *

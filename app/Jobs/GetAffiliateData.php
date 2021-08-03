@@ -50,6 +50,10 @@ class GetAffiliateData implements ShouldQueue {
 
     public $maxExceptions = 1;
 
+    public $timeout = 60;
+
+    public $failOnTimeout = true;
+
     /**
      * Create a new job instance.
      *
