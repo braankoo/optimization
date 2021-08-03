@@ -21,7 +21,7 @@ class GetReport implements ShouldQueue {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    public int $tries = 1;
+    public int $tries = 5;
 
     public array $backoff = [ 30, 60, 120, 360 ];
     /**
@@ -53,6 +53,7 @@ class GetReport implements ShouldQueue {
      * Execute the job.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle()
     {

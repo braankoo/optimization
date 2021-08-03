@@ -4,6 +4,9 @@ namespace App\Jobs;
 
 use App\Library\Affiliate\SQLOperator;
 use App\Library\Affiliate\Stats;
+use Fbmaff\Api\Exceptions\ApiException;
+use Fbmaff\Auth\Exceptions\MissingUsernameException;
+use Fbmaff\Transport\Exceptions\InvalidHostnameException;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,7 +44,7 @@ class GetAffiliateData implements ShouldQueue {
 
     public int $tries = 5;
 
-    public $backoff =  20;
+    public $backoff = 20;
 
     public string $adPlatform;
 
@@ -55,7 +58,13 @@ class GetAffiliateData implements ShouldQueue {
         $this->adPlatform = $adPlatform;
         $this->startDate = $statDate;
         $this->host = $host;
-        $this->stats = new Stats($adPlatform);
+        try
+        {
+            $this->stats = new Stats($adPlatform);
+        } catch ( ApiException | MissingUsernameException | InvalidHostnameException $e )
+        {
+            $this->fail($e);
+        }
         $this->webmaster = $webmaster;
     }
 
