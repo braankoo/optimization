@@ -67,7 +67,7 @@ class Stats {
             )
             ->setOffset($offset)
             ->setLimit($limit)
-            ->setSortBy([ 'adgroup' ])
+            ->setSortBy([ 'adgroup' => 'DESC' ])
             ->fetch();
         $data = $this->api->getData();
 
