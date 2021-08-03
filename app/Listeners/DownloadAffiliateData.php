@@ -5,12 +5,10 @@ namespace App\Listeners;
 use App\Events\AdPlatformDataDownloaded;
 use App\Events\AffiliateDataDownloaded;
 use App\Jobs\GetAffiliateData;
-use App\Library\SQL\Operator;
 use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Bus;
 
 class DownloadAffiliateData implements ShouldQueue {
@@ -27,7 +25,6 @@ class DownloadAffiliateData implements ShouldQueue {
      *
      * @var int
      */
-    public int $delay = 5;
     public string $startDate;
     public string $endDate;
 
@@ -63,7 +60,7 @@ class DownloadAffiliateData implements ShouldQueue {
                     foreach ( $this->getDateRange($event) as $date )
                     {
                         $jobs[] = new GetAffiliateData(
-                            $event->startDate,
+                            $date,
                             $platform,
                             $webmaster,
                             $event->adPlatform
@@ -86,8 +83,10 @@ class DownloadAffiliateData implements ShouldQueue {
             })->dispatch();
     }
 
+
     /**
      * @param \App\Events\AdPlatformDataDownloaded $event
+     * @return array
      */
     private function getDateRange(AdPlatformDataDownloaded $event): array
     {
