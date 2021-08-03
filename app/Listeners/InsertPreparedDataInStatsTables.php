@@ -4,11 +4,14 @@ namespace App\Listeners;
 
 use App\Events\AffiliateDataDownloaded;
 use App\Library\SQL\Operator;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 
 
-class InsertPreparedDataInStatsTables {
+class InsertPreparedDataInStatsTables implements ShouldQueue {
 
+
+    public ?string $queue = 'listeners';
     /**
      * Create the event listener.
      *
