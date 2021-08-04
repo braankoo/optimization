@@ -25,7 +25,7 @@ class Operator {
                         earned bigint default 0,
                         created_at date not null,
                         ad_group_id bigint unsigned not null,
-                        primary key (ad_group_id, created_at)
+                        CONSTRAINT unqieu_ad_group_created_at UNIQUE (ad_group_id, created_at)
                     ) ENGINE=InnoDB');
 
     }
