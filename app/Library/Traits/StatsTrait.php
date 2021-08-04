@@ -32,10 +32,10 @@ trait StatsTrait {
                         $total[$key] = $data->sum('impressions');
                         break;
                     case 'cost':
-                        $total[$key] = $data->sum('cost');
+                        $total[$key] = round($data->sum('cost'), 2);
                         break;
                     case 'earned':
-                        $total[$key] = $data->sum('earned');
+                        $total[$key] = round($data->sum('earned'), 2);
                         break;
                     case 'actual_cpa':
                         $total[$key] = round($data->average('actual_cpa'), 2);
@@ -47,7 +47,7 @@ trait StatsTrait {
                         $total[$key] = round($data->average('avg_cpc'), 2);
                         break;
                     case 'pl':
-                        $total[$key] = $data->sum('pl');
+                        $total[$key] = round($data->sum('pl'),2);
                         break;
                     case 'avg_position':
                         $total[$key] = round($data->average('avg_position'), 2);

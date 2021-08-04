@@ -89,7 +89,7 @@ class ClientController extends Controller {
              campaigns.id as id,
              sum(clicks) as clicks,
              sum(impressions) as impressions,
-             TRUNCATE((sum(cost) / 1000000),2) as cost,
+             ROUND(TRUNCATE((sum(cost) / 1000000),2),2) as cost,
              TRUNCATE((sum(earned) / 1000000),2) as earned,
              TRUNCATE(( sum(cost) / 1000000 ) / sum(profile),2) as actual_cpa,
              TRUNCATE(( sum(cost) / 1000000 ) / sum(upgrade),2)   as actual_cps,
