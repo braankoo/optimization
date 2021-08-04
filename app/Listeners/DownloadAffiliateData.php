@@ -45,6 +45,10 @@ class DownloadAffiliateData implements ShouldQueue {
      * @var \Illuminate\Bus\Batch
      */
     public Batch $batch;
+    /**
+     * @var array
+     */
+    public array $jobs;
 
 
     /**
@@ -77,33 +81,29 @@ class DownloadAffiliateData implements ShouldQueue {
             })->onQueue('affiliate')->dispatch();
 
 
-        $jobs = Campaign::on($event->adPlatform)
+        Campaign::on($event->adPlatform)
             ->with([ 'webmasters', 'client.platforms' ])
             ->get()
-            ->groupBy([ 'webmasters.*.name', 'client.platforms.*.url' ])->map(function ($groups, $webmaster) use ($event) {
+            ->groupBy([ 'webmasters.*.name', 'client.platforms.*.url' ])->each(function ($groups, $webmaster) use ($event) {
 
                 $platforms = $groups->keys();
 
-                return $platforms->map(function ($platform) use ($webmaster, $event) {
+                $platforms->each(function ($platform) use ($webmaster, $event) {
 
-                    $jobs = [];
                     foreach ( $this->getDateRange($event) as $date )
                     {
-                        $jobs[] = new GetAffiliateData(
+                        $this->jobs[] = new GetAffiliateData(
                             $date,
                             $platform,
                             $webmaster,
                             $event->adPlatform
                         );
                     }
+                });
 
-                    return $jobs;
+            });
 
-                })->toArray();
-
-            })->values()->flatten()->toArray();
-
-        foreach ( array_chunk($jobs, 500) as $jobChunk )
+        foreach ( array_chunk($this->jobs, 1000) as $jobChunk )
         {
             $this->batch->add($jobChunk);
         }
