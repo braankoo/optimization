@@ -14,7 +14,7 @@ class SQLOperator {
     public static function insertData(string $adPlatform, array $data)
     {
         DB::connection($adPlatform)->table('Temp_platform_stats')
-            ->upsert($data, [ 'ad_group_id', 'day' ],
+            ->upsert($data, [ 'ad_group_id', 'created_at' ],
                 [
                     'profile' => DB::raw('VALUES(profile) + profile'),
                     'upgrade' => DB::raw('VALUES(upgrade) + upgrade'),

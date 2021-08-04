@@ -82,7 +82,7 @@ class GetAffiliateData implements ShouldQueue {
      */
     public function handle()
     {
-        $this->stats->api->setProgram('PPU')->setDates($this->startDate);
+        $this->stats->api->setProgram('PPU')->setDates($this->startDate, null);
 
         $offset = 0;
         do
