@@ -105,7 +105,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
         foreach ( array_chunk($jobs, 500) as $jobChunk )
         {
-            $this->batch->add($jobs);
+            $this->batch->add($jobChunk);
         }
 
 
