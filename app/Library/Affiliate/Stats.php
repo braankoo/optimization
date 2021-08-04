@@ -62,7 +62,7 @@ class Stats {
             ->setGroupBy(
                 [
                     'adgroup',
-                    'date'
+                    'campaign'
                 ]
             )
             ->setOffset($offset)
