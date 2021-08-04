@@ -39,7 +39,7 @@ class DownloadAffiliateData implements ShouldQueue {
     /**
      * @var int
      */
-    public int $timeout = 600;
+    public int $timeout = 3600;
 
     /**
      * @var bool

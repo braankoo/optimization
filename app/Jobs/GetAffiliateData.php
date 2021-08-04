@@ -50,7 +50,7 @@ class GetAffiliateData implements ShouldQueue {
 
     public $maxExceptions = 1;
 
-    public $timeout = 30;
+    public $timeout = 50;
 
     public $failOnTimeout = true;
 

@@ -2,14 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Events\AdPlatformDataDownloaded;
-use App\Jobs\GetReport;
-use App\Models\Campaign;
-use App\Models\Client;
 use Carbon\Carbon;
-use Illuminate\Bus\Batch;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 
 class PrepareData extends Command {
 
