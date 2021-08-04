@@ -8,11 +8,7 @@ use App\Jobs\GetAffiliateData;
 use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 
 /**
@@ -36,10 +32,8 @@ class DownloadAffiliateData implements ShouldQueue {
      * @var string
      */
     public string $endDate;
-    /**
-     * @var int
-     */
-    public int $timeout = 3600;
+
+    public $timeout = 3600;
 
     /**
      * @var bool
@@ -101,7 +95,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
                 });
 
-                foreach ( array_chunk($jobs, 500) as $jobsChunk )
+                foreach ( array_chunk($jobs, 1000) as $jobsChunk )
                 {
                     $this->batch->add($jobsChunk);
                 }
