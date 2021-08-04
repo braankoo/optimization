@@ -90,13 +90,21 @@ class DownloadAffiliateData implements ShouldQueue {
 
                 $platforms = $groups->keys();
 
-                $platforms->each(function ($platform) use ($webmaster, $event) {
+                $jobs = [];
+                $platforms->each(function ($platform) use ($webmaster, $event, &$jobs) {
 
                     foreach ( $this->getDateRange($event) as $date )
                     {
-                        $this->batch->add([ new GetAffiliateData($date, $platform, $webmaster, $event->adPlatform) ]);
+                        $jobs[] = new GetAffiliateData($date, $platform, $webmaster, $event->adPlatform);
+
                     }
+
                 });
+
+                foreach ( array_chunk($jobs, 100) as $jobsChunk )
+                {
+                    $this->batch->add($jobsChunk);
+                }
 
             });
 
