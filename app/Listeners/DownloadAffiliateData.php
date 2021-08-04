@@ -46,7 +46,7 @@ class DownloadAffiliateData implements ShouldQueue {
      */
     public bool $failOnTimeout = true;
 
-    public $delay = 60;
+    public int $delay = 120;
     /**
      * @var \Illuminate\Bus\Batch
      */
