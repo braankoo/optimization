@@ -10,11 +10,12 @@
     "require": {
         "php": "^7.4|^8.0",
         "fideloper/proxy": "^4.4",
+        "firstbeatmedia/adwordmanagement": "@dev",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
-        "firstbeatmedia/adwordmanagement": "@dev"
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
