@@ -62,12 +62,13 @@ class Stats {
             ->setGroupBy(
                 [
                     'adgroup',
-                    'campaign'
+                    'campaign',
+                    'date'
                 ]
             )
             ->setOffset($offset)
             ->setLimit($limit)
-            ->setSortBy([ 'adgroup' => 'DESC' ])
+            ->setSortBy([ 'adgroup' => 'DESC', 'date' => 'DESC' ])
             ->fetch();
         $data = $this->api->getData();
 
