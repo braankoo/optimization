@@ -24,7 +24,7 @@ class GetReport implements ShouldQueue {
     /**
      * @var int
      */
-    public int $tries = 3;
+    public int $tries = 1;
 
     /**
      * @var int
