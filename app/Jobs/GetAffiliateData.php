@@ -42,7 +42,7 @@ class GetAffiliateData implements ShouldQueue {
      */
     public string $endDate;
 
-    public int $tries = 1;
+    public int $tries = 3;
 
     public int $backoff = 0;
 
@@ -50,7 +50,7 @@ class GetAffiliateData implements ShouldQueue {
 
     public $maxExceptions = 1;
 
-    public $timeout = 50;
+    public $timeout = 60;
 
     public $failOnTimeout = true;
 
