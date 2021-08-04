@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Bus;
  *
  */
 class DownloadAffiliateData implements ShouldQueue {
-
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    
     /**
      * The name of the queue the job should be sent to.
      *
@@ -31,7 +29,7 @@ class DownloadAffiliateData implements ShouldQueue {
     /**
      * The time (seconds) before the job should be processed.
      *
-     * @var int
+     * @var string
      */
     public string $startDate;
     /**
