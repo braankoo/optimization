@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Bus;
  *
  */
 class DownloadAffiliateData implements ShouldQueue {
-    
+
     /**
      * The name of the queue the job should be sent to.
      *
@@ -47,6 +47,10 @@ class DownloadAffiliateData implements ShouldQueue {
     public bool $failOnTimeout = true;
 
     public $delay = 60;
+    /**
+     * @var \Illuminate\Bus\Batch
+     */
+    public Batch $batch;
 
 
     /**
@@ -68,33 +72,8 @@ class DownloadAffiliateData implements ShouldQueue {
     public function handle(AdPlatformDataDownloaded $event)
     {
 
-        $jobs = Campaign::on($event->adPlatform)
-            ->with([ 'webmasters', 'client.platforms' ])
-            ->get()
-            ->groupBy([ 'webmasters.*.name', 'client.platforms.*.url' ])->map(function ($groups, $webmaster) use ($event) {
 
-                $platforms = $groups->keys();
-
-                return $platforms->map(function ($platform) use ($webmaster, $event) {
-
-                    $jobs = [];
-                    foreach ( $this->getDateRange($event) as $date )
-                    {
-                        $jobs[] = new GetAffiliateData(
-                            $date,
-                            $platform,
-                            $webmaster,
-                            $event->adPlatform
-                        );
-                    }
-
-                    return $jobs;
-
-                })->toArray();
-
-            })->values()->flatten()->toArray();
-
-        Bus::batch($jobs)
+        $this->batch = Bus::batch([])
             ->then(
                 function (Batch $batch) use ($event) {
                     event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
@@ -102,6 +81,26 @@ class DownloadAffiliateData implements ShouldQueue {
             ->catch(function (Batch $batch) use ($event) {
 
             })->onQueue('affiliate')->dispatch();
+
+
+        Campaign::on($event->adPlatform)
+            ->with([ 'webmasters', 'client.platforms' ])
+            ->get()
+            ->groupBy([ 'webmasters.*.name', 'client.platforms.*.url' ])->each(function ($groups, $webmaster) use ($event) {
+
+                $platforms = $groups->keys();
+
+                $platforms->each(function ($platform) use ($webmaster, $event) {
+
+                    foreach ( $this->getDateRange($event) as $date )
+                    {
+                        $this->batch->add([ new GetAffiliateData($date, $platform, $webmaster, $event->adPlatform) ]);
+                    }
+                });
+
+            });
+
+
     }
 
 
