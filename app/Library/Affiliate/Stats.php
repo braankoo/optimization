@@ -102,10 +102,12 @@ class Stats {
         }, $stats);
 
         $data = array_filter($data, function ($row) {
-            return $row['profile'] > 0
-                || $row['earned'] > 0
-                || $row['upgrade'] > 0
-                || preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']);
+            return (
+                    $row['profile'] > 0
+                    || $row['earned'] > 0
+                    || $row['upgrade'] > 0
+                )
+                && preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']);
         });
 
         $data = array_map(function ($row) {
