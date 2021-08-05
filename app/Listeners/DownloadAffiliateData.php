@@ -92,12 +92,14 @@ class DownloadAffiliateData implements ShouldQueue {
 
                     foreach ( $this->getDateRange($event) as $date )
                     {
+
                         $this->jobs[] = new GetAffiliateData(
                             $date,
                             $platform,
                             $webmaster,
                             $event->adPlatform
                         );
+
                     }
                 });
 
