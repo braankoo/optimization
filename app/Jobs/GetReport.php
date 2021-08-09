@@ -75,11 +75,13 @@ class GetReport implements ShouldQueue {
     {
 
         $report = AdWordManagement::report($this->client)->get($this->startDate, $this->endDate);
-        $preparedCVS = SedItFactory::make($this->client->getConnectionName())->prepareForSql($report);
-        SqlOperatorFactory::make($this->client->getConnectionName())->loadToTemporaryTable($preparedCVS);
-
-        Storage::delete($preparedCVS);
-        Storage::delete($report);
+        if ($report)
+        {
+            $preparedCVS = SedItFactory::make($this->client->getConnectionName())->prepareForSql($report);
+            SqlOperatorFactory::make($this->client->getConnectionName())->loadToTemporaryTable($preparedCVS);
+            Storage::delete($preparedCVS);
+            Storage::delete($report);
+        }
 
     }
 }
