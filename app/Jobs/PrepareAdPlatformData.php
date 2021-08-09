@@ -77,16 +77,12 @@ class PrepareAdPlatformData implements ShouldQueue {
                     new GetReport($client, $this->startDate, $this->endDate)
                 ];
             }
-
         });
-
-
-
-
+        
         Bus::batch($jobs)
             ->allowFailures(false)
             ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($this->adPlatform);
+                Operator::dropTemporaryTable($adPlatform);
             })
             ->dispatch();
 
