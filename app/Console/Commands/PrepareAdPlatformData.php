@@ -12,7 +12,7 @@ class PrepareAdPlatformData extends Command {
      *
      * @var string
      */
-    protected $signature = 'prepare:ad-platform-data {adPlatform}';
+    protected $signature = 'prepare:ad-platform-data {adPlatform} {--startDate=yesterday} {--endDate=today}';
 
     /**
      * The console command description.
@@ -40,7 +40,9 @@ class PrepareAdPlatformData extends Command {
     {
 
         \App\Jobs\PrepareAdPlatformData::dispatch(
-            $this->argument('adPlatform')
+            $this->argument('adPlatform'),
+            Carbon::parse($this->option('startDate'))->format('Y-m-d'),
+            Carbon::parse($this->option('endDate'))->format('Y-m-d'),
         );
 
         return 0;

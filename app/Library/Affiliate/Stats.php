@@ -125,6 +125,10 @@ class Stats {
         return array_values($data);
     }
 
+
+
+
+
     /**
      * @param string $adPlatform
      */
