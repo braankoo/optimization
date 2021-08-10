@@ -29,7 +29,7 @@ class Detector implements DetectorInterface {
             });
             $webmaster = array_values($webmaster);
 
-            return $this->prepareWebmasters($webmaster[0]);
+            return $this->prepareWebmasters($webmaster[0]->Value);
 
         }
 
