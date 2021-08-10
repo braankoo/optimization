@@ -22,23 +22,15 @@ class Detector implements DetectorInterface {
         if (!is_null($this->ad->TrackingUrlTemplate))
         {
 
-            $url = parse_url($this->ad->TrackingUrlTemplate);
 
-            if (array_key_exists('query', $url))
-            {
-                $query = parse_query($url['query']);
+            $params = $this->ad->UrlCustomParameters->Parameters->CustomParameter;
+            $webmaster = array_filter($params, function ($param) {
+                return $param->Key == 'id';
+            });
+            $webmaster = array_values($webmaster);
 
-                return $this->prepareWebmasters($query['aff_id']);
-            } else
-            {
-                $params = $this->ad->UrlCustomParameters->Parameters->CustomParameter;
-                $webmaster = array_filter($params, function ($param) {
-                    return $param->Key == 'id';
-                });
-                $webmaster = array_values($webmaster);
+            return $this->prepareWebmasters($webmaster[0]);
 
-                return $this->prepareWebmasters($webmaster[0]->getValue());
-            }
         }
 
         $finalUrl = parse_url($this->ad->FinalUrls->string[0]);
