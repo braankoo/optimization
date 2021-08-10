@@ -101,7 +101,7 @@ class Detector implements DetectorInterface {
     {
 
         echo PHP_EOL;
-        preg_match('(bingmob|bingtab|bing|msnadsmob|msnadstab|mnsads|JacksonM)', $webmaster, $matches);
+        preg_match('(bingmob|bingtab|bing|msnadsmob|msnadstab|mnsads|JacksonM|jacksonm)', $webmaster, $matches);
         switch ( $matches[0] )
         {
             case 'msnadsmob':
