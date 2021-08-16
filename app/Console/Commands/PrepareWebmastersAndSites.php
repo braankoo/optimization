@@ -39,7 +39,7 @@ class PrepareWebmastersAndSites extends Command {
      */
     public function handle()
     {
-        Campaign::on($this->argument('adPlatform'))->each(function ($campaign) {
+        Campaign::on($this->argument('adPlatform'))->whereIn('status', [ 'ENABLED', 'ACTIVE', 'PAUSED' ])->each(function ($campaign) {
             SetUpCampaignWebmasterAndSite::dispatch($campaign);
         });
 
