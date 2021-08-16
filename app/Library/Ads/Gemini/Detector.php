@@ -93,13 +93,14 @@ class Detector implements DetectorInterface {
     private function detectDevice($webmaster): string
     {
 
-        preg_match('(yahoomob|yahootab|yahoo|yahgem|msnads)', $webmaster, $matches);
+        preg_match('(yahoomob|yahootab|yahoo|yahgem|msnads|bingppc|bingppcmob)', $webmaster, $matches);
         switch ( $matches[0] )
         {
             case 'yahoomob':
                 $device = 'MOBILE';
                 break;
             case 'yahgem':
+            case 'bingppcmob':
                 $device = 'MOBILE';
                 break;
             case 'yahootab':
