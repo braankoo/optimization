@@ -44,7 +44,7 @@ class SetUpCampaignWebmasterAndSite implements ShouldQueue {
     {
 
 
-        $this->campaign->adGroups()->chunk(20, function ($adGroups) {
+        $this->campaign->adGroups()->chunk(3, function ($adGroups) {
 
             $ads = AdWordManagement::client($this->campaign->client)->getAds($adGroups->map->id->toArray());
 
