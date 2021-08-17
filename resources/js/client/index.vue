@@ -65,6 +65,7 @@
                 :bordered="true"
                 :outlined="true"
                 :filter="filter"
+                :current-page="currentPage"
                 id="clients-table"
                 label-sort-desc=""
                 label-sort-asc=""
@@ -73,9 +74,25 @@
                 <template #thead-top="data">
 
                     <b-tr>
-                        <b-th v-for="field in data.fields" v-bind:key="field.key">
-                            {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
-                        </b-th>
+                        <template v-for="field in data.fields">
+                            <template v-if="field.key === 'pl'">
+                                <b-th v-if="total[field.key] >0" class="table-success">
+                                    {{ total[field.key] }}
+                                </b-th>
+                                <b-th v-else-if="total[field.key] < -50" class="table-danger">
+                                    {{ total[field.key] }}
+                                </b-th>
+                                <b-th v-else-if="total[field.key] > -50 && total[field.key] < 0"
+                                      class="table-warning">
+                                    {{ total[field.key] }}
+                                </b-th>
+                            </template>
+                            <template v-else>
+                                <b-th>
+                                    {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
+                                </b-th>
+                            </template>
+                        </template>
                     </b-tr>
                 </template>
                 <template #table-busy class="d-flex justify-content-around text-center">
@@ -181,7 +198,8 @@ export default {
                     visible: true,
                     sortable: true,
                     tdClass(value, key, item) {
-                        const number = parseFloat(item);
+                        const number = parseFloat(value);
+
                         if (number < -50) {
                             return 'table-danger';
                         } else if (number >= -50 && number <= 0) {

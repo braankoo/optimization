@@ -2,6 +2,7 @@
 
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
+@import "~font-awesome/scss/font-awesome.scss";
 
 html, body {
     height: 100%;
@@ -34,6 +35,6 @@ body {
 }
 
 .breadcrumb-item.active,
-.breadcrumb a{
+.breadcrumb a {
     color: #fff;
 }

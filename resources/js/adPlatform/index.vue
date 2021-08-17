@@ -305,7 +305,20 @@
                 <template #table-busy class="d-flex justify-content-around text-center">
                     <b-spinner></b-spinner>
                 </template>
-
+                <template #cell(name)="data">
+                    <router-link
+                        :to="{
+                        name: 'Client Index',
+                        params: {
+                            adPlatform: data.item.name,
+                            },
+                        query: {
+                            startDate: filter.startDate,
+                            endDate: filter.endDate,
+                        }}">
+                        {{ data.item.name }}
+                    </router-link>
+                </template>
 
             </b-table>
 
@@ -807,7 +820,8 @@ export default {
                     visible: true,
                     sortable: true,
                     tdClass(value, key, item) {
-                        const number = parseFloat(item);
+                        const number = parseFloat(value);
+
                         if (number < -50) {
                             return 'table-danger';
                         } else if (number >= -50 && number <= 0) {
@@ -959,7 +973,7 @@ export default {
             vm.filter.startDate = to.query.startDate;
             vm.filter.endDate = to.query.endDate;
         })
-    },
+    }
 
 }
 </script>
