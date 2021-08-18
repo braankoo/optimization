@@ -58,8 +58,8 @@ class CampaignController extends Controller {
             ->when(!empty($request->input('startDate')), function ($q) use ($request) {
                 $q->whereDate('created_at', '>=', $request->input('startDate'));
             })
-            ->when(!empty($request->input('startDate')), function ($q) use ($request) {
-                $q->whereDate('created_at', '>=', $request->input('endDate'));
+            ->when(!empty($request->input('endDate')), function ($q) use ($request) {
+                $q->whereDate('created_at', '=<', $request->input('endDate'));
             })
             ->orderBy(!empty($request->input('sortBy')) ? $request->input('sortBy') : 'name', $request->input('sortDesc') == 'true' ? 'ASC' : 'DESC')
             ->groupBy('ad_groups.id')
@@ -95,8 +95,8 @@ class CampaignController extends Controller {
             ->when(!empty($request->input('startDate')), function ($q) use ($request) {
                 $q->whereDate('created_at', '>=', $request->input('startDate'));
             })
-            ->when(!empty($request->input('startDate')), function ($q) use ($request) {
-                $q->whereDate('created_at', '>=', $request->input('endDate'));
+            ->when(!empty($request->input('endDate')), function ($q) use ($request) {
+                $q->whereDate('created_at', '<=', $request->input('endDate'));
             })
             ->orderBy(!empty($request->input('sortBy')) ? $request->input('sortBy') : 'name', $request->input('sortDesc') == 'true' ? 'ASC' : 'DESC')
             ->groupBy('ad_groups.id')
