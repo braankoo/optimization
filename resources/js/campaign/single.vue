@@ -62,7 +62,7 @@
                 :bordered="true"
                 :outlined="true"
                 :filter="filter"
-                id="clients-table"
+                id="campaign-table"
                 label-sort-desc=""
                 label-sort-asc=""
                 :current-page="currentPage"
@@ -107,7 +107,7 @@
                 v-model="currentPage"
                 :total-rows="rows"
                 :per-page="perPage"
-                aria-controls="clients-table"
+                aria-controls="campaign-table"
             ></b-pagination>
         </b-card>
     </div>
