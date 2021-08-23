@@ -4,6 +4,7 @@ import AdPlatformIndex from "./adPlatform/index";
 import index from "./client/index";
 import single from "./client/single";
 import campaignSingle from "./campaign/single";
+import campaignIndex from "./campaign/index";
 
 
 import Container from "./Container";
@@ -45,6 +46,10 @@ const router = new VueRouter(
                         path: 'client/:client/campaign/:campaign',
                         component: campaignSingle,
                         name: 'Campaign Single'
+                    },
+                    {
+                        path: 'campaigns',
+                        component: campaignIndex
                     }
                 ]
             }
