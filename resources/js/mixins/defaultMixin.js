@@ -46,7 +46,10 @@ export default {
         'filter.startDate':
             {
                 handler(newValue) {
-                    this.$refs.charts.reload(newValue, this.filter.endDate);
+                    if (this.$refs.hasOwnProperty('charts')) {
+                        this.$refs.charts.reload(newValue, this.filter.endDate);
+                    }
+
 
                 }
             }
@@ -54,7 +57,9 @@ export default {
         'filter.endDate':
             {
                 handler(newValue) {
-                    this.$refs.charts.reload(this.filter.startDate, newValue);
+                    if (this.$refs.hasOwnProperty('charts')) {
+                        this.$refs.charts.reload(this.filter.startDate, newValue);
+                    }
 
                 }
             }

@@ -5,6 +5,7 @@ import index from "./client/index";
 import single from "./client/single";
 import campaignSingle from "./campaign/single";
 import campaignIndex from "./campaign/index";
+import adGroupIndex from "./adGroup/index";
 
 
 import Container from "./Container";
@@ -50,6 +51,10 @@ const router = new VueRouter(
                     {
                         path: 'campaigns',
                         component: campaignIndex
+                    },
+                    {
+                        path: 'adGroups',
+                        component: adGroupIndex
                     }
                 ]
             }

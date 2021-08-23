@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdGroupController;
 use App\Http\Controllers\CampaignController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::get('/{adPlatform}/client/{client}', [ \App\Http\Controllers\ClientContro
 
 
 Route::get('/{adPlatform}/campaigns', [ CampaignController::class, 'index' ]);
+Route::get('/{adPlatform}/adGroups', [ AdGroupController::class, 'index' ]);
 
 Route::get('/{adPlatform}/client/{client}/campaign/{campaign}/chart', [ \App\Http\Controllers\CampaignController::class, 'chartIndex' ]);
 Route::get('/{adPlatform}/client/{client}/campaign/{campaign}', [ \App\Http\Controllers\CampaignController::class, 'show' ]);
