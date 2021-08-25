@@ -61,20 +61,11 @@ class PrepareData implements ShouldQueue {
 
         $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
 
-            if ($this->adPlatform == 'gemini')
-            {
-                return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetAds($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            } else
-            {
-                return [
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            }
+
+            return [
+                new GetReport($client, $this->startDate, $this->endDate)
+            ];
+            
 
         });
 

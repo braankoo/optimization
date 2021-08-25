@@ -98,6 +98,8 @@
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
                 </template>
+
+
             </b-table>
             <b-pagination
                 v-model="currentPage"
