@@ -71,5 +71,10 @@ export default {
 
                 }
             }
+    },
+    mounted() {
+        if (this.$refs.hasOwnProperty('charts')) {
+            this.$refs.charts.reload(this.filter.startDate, this.filter.endDate);
+        }
     }
 }
