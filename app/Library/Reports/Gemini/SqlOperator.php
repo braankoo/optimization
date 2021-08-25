@@ -24,14 +24,14 @@ class SqlOperator implements SqlOperatorInterface {
                LINES
                    TERMINATED BY '\n'
                IGNORE 1 ROWS
-               (@Ad_group_ID, @Impressions, @Average_Position, @Clicks, @Spent, @Day)
+               (@Ad_group_ID, @Impressions, @Average_Position, @Clicks, @Spend, @Day)
 
                SET  ad_group_id            = @Ad_Group_ID,
                     impressions   = @Impressions,
                     avg_position  = @Average_Position,
                     clicks        = @Clicks,
-                    cost         = @Spend * 1000000,
-                    created_at           = @Day
+                    cost          = @Spend * 1000000,
+                    created_at    = @Day
 
             ");
     }
