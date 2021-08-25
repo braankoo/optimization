@@ -123,7 +123,6 @@ export default {
     mixins: [defaultMixin],
     data() {
         return {
-            currentPage: 1,
             fields: [
                 {
                     key: 'name',

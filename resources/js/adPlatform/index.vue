@@ -329,6 +329,7 @@
 
 <script>
 import LineChart from "../chart/AdPlatfom/LineChart";
+import moment from "moment";
 
 export default {
 
@@ -339,8 +340,8 @@ export default {
         return {
             swapped: false,
             filter: {
-                startDate: '',
-                endDate: ''
+                startDate: moment().subtract('10', 'd').format('YYYY-MM-DD'),
+                endDate: moment().format('YYYY-MM-DD')
             },
             charts: {
                 CostVsIncome: {
@@ -970,8 +971,12 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         next(vm => {
-            vm.filter.startDate = to.query.startDate;
-            vm.filter.endDate = to.query.endDate;
+            if (to.query.startDate) {
+                vm.filter.startDate = to.query.startDate;
+            }
+            if (to.query.endDate) {
+                vm.filter.endDate = to.query.endDate;
+            }
         })
     }
 

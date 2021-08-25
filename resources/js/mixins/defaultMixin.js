@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default {
     data() {
         return {
@@ -6,9 +8,10 @@ export default {
             rows: 0,
             filter: {
                 name: '',
-                startDate: '',
-                endDate: ''
+                startDate: moment().subtract('10', 'd').format('YYYY-MM-DD'),
+                endDate: moment().format('YYYY-MM-DD')
             },
+            currentPage: 1,
             total: {}
         }
     },
@@ -37,8 +40,13 @@ export default {
     ,
     beforeRouteEnter(to, from, next) {
         next(vm => {
-            vm.filter.startDate = to.query.startDate;
-            vm.filter.endDate = to.query.endDate;
+            if (to.query.startDate) {
+                vm.filter.startDate = to.query.startDate;
+            }
+            if (to.query.endDate) {
+                vm.filter.endDate = to.query.endDate;
+            }
+
         })
     }
     ,

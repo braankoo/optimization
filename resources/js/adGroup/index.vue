@@ -113,14 +113,13 @@
 
 <script>
 import defaultMixin from "../mixins/defaultMixin";
+import moment from "moment";
 
 export default {
     name: "index",
     mixins: [defaultMixin],
     data() {
         return {
-
-            currentPage: 1,
             fields: [
                 {
                     key: 'name',
@@ -263,7 +262,7 @@ export default {
     methods: {
         async getData(ctx) {
             try {
-                console.log(ctx);
+
                 const response = await this.$http.get(`${ctx.apiUrl}`, {
                     params: {
                         page: ctx.currentPage,
@@ -281,10 +280,9 @@ export default {
             } catch (error) {
                 return []
             }
-
         },
-
     },
+
 }
 </script>
 

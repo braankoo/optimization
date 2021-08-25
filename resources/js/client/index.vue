@@ -129,6 +129,7 @@
 
 import defaultCharts from '../charts/defaultCharts';
 import defaultMixin from "../mixins/defaultMixin";
+import moment from "moment";
 
 export default {
     name: "index",
@@ -281,6 +282,7 @@ export default {
     },
     methods: {
         async getData(ctx) {
+
             try {
                 const response = await this.$http.get(`${ctx.apiUrl}`, {
                     params: {
@@ -301,9 +303,11 @@ export default {
             }
 
         }
-    },
+    }
 
 }
+
+
 </script>
 
 <style scoped>
