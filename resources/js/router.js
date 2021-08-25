@@ -18,6 +18,10 @@ const router = new VueRouter(
         mode: 'history',
 
         routes: [
+            {
+                path: '/',
+                redirect: '/adPlatforms'
+            },
 
             {
                 path: '/adPlatforms',
