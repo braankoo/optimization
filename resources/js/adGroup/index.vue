@@ -318,8 +318,11 @@ export default {
                     adGroups: this.selected
                 }
             ).then((response) => {
-                console.log(response.data);
+
                 this.state = true;
+                setTimeout(() => {
+                    this.state = null;
+                }, 3000);
             })
         }
 
