@@ -22,7 +22,7 @@
         <default-charts ref="charts"/>
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
-                <b-col lg="2">
+                <b-col lg="3" class="d-flex justify-content-between">
                     <b-dropdown
                         id="dropdown-1"
                         text="Columns"
@@ -40,6 +40,12 @@
                         >{{ column.label }}
                         </b-dropdown-item-button>
                     </b-dropdown>
+                    <template v-if="selected.length > 0" class="ml-1">
+                        <b-form-input type="number" v-model="bid" placeholder="Bid Value" :state="state" class="ml-1"/>
+                        <b-input-group-append>
+                            <b-button variant="info" @click="updateBid" :disabled="bid.length === 0">Update</b-button>
+                        </b-input-group-append>
+                    </template>
                 </b-col>
                 <b-col lg="3">
                     <b-input-group size="sm">
@@ -67,13 +73,18 @@
                 label-sort-asc=""
                 :current-page="currentPage"
                 @update:busy="swapTrTh($event)"
+                @context-changed="selected=[];bid=''"
+                ref="adGroups-table"
             >
                 <template #thead-top="data">
-
                     <b-tr>
-
                         <template v-for="field in data.fields">
-                            <template v-if="field.key === 'pl'">
+                            <template v-if="field.key === 'id'">
+                                <b-th>
+                                    <b-form-checkbox @change="selectAll($event)"></b-form-checkbox>
+                                </b-th>
+                            </template>
+                            <template v-else-if="field.key === 'pl'">
                                 <b-th v-if="total[field.key] >0" class="table-success">
                                     {{ total[field.key] }}
                                 </b-th>
@@ -94,6 +105,9 @@
                         </template>
                     </b-tr>
 
+                </template>
+                <template #cell(id)="data">
+                    <b-form-checkbox v-model="selected" :value="data.item.id"></b-form-checkbox>
                 </template>
                 <template #table-busy class="d-flex justify-content-around text-center">
                     <b-spinner></b-spinner>
@@ -124,6 +138,11 @@ export default {
     data() {
         return {
             fields: [
+                {
+                    key: 'id',
+                    label: '',
+                    visible: true
+                },
                 {
                     key: 'name',
                     label: 'AdGroup',
@@ -276,7 +295,9 @@ export default {
                 {
                     text: ''
                 }
-            ]
+            ],
+            bid: '',
+            selected: [],
         }
     },
     methods: {
@@ -304,6 +325,24 @@ export default {
             }
 
         },
+        selectAll($event) {
+            if ($event) {
+                this.selected = [];
+                this.selected = this.$refs['adGroups-table'].localItems.map((el) => el.id);
+            } else {
+                this.selected = [];
+            }
+        },
+        updateBid() {
+            this.$http.post(`/api/${this.$route.params.adPlatform}/adGroups/bid`,
+                {
+                    bid: this.bid,
+                    adGroups: this.selected
+                }
+            ).then((response) => {
+                console.log(response.data);
+            })
+        }
 
     },
 

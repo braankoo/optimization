@@ -18,7 +18,7 @@
         </b-row>
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
-                <b-col lg="3" class="d-flex justify-content-between">
+                <b-col lg="3" class="d-flex">
 
                     <b-dropdown
                         id="dropdown-1"
@@ -37,12 +37,13 @@
                         >{{ column.label }}
                         </b-dropdown-item-button>
                     </b-dropdown>
-                    <b-input-group v-if="selected.length > 0" class="ml-1">
-                        <b-form-input v-model="bid" placeholder="Bid Value"></b-form-input>
+                    <template v-if="selected.length > 0" class="ml-1">
+                        <b-form-input type="number" v-model="bid" placeholder="Bid Value" :state="state" class="ml-1"/>
                         <b-input-group-append>
-                            <b-button variant="info" @click="updateBid">Update</b-button>
+                            <b-button variant="info" @click="updateBid" :disabled="bid.length === 0">Update</b-button>
                         </b-input-group-append>
-                    </b-input-group>
+                    </template>
+
                 </b-col>
 
                 <b-col lg="3">
@@ -72,7 +73,7 @@
                 :current-page="currentPage"
                 @update:busy="swapTrTh($event)"
                 ref="adGroups-table"
-                @context-changed="selected=[]"
+                @context-changed="selected=[];bid=''"
             >
                 <template #thead-top="data">
                     <b-tr>
@@ -106,11 +107,9 @@
                 <template #table-busy class="d-flex justify-content-around text-center">
                     <b-spinner></b-spinner>
                 </template>
-
                 <template #cell(id)="data">
                     <b-form-checkbox v-model="selected" :value="data.item.id"></b-form-checkbox>
                 </template>
-
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
                 </template>
@@ -278,7 +277,8 @@ export default {
             ],
             selected: [],
             show: false,
-            bid: ''
+            bid: '',
+            state: null
         }
     },
     methods: {
@@ -319,6 +319,7 @@ export default {
                 }
             ).then((response) => {
                 console.log(response.data);
+                this.state = true;
             })
         }
 
