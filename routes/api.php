@@ -39,3 +39,4 @@ Route::get('/{adPlatform}/client/{client}/campaign/{campaign}/chart', [ \App\Htt
 Route::get('/{adPlatform}/client/{client}/campaign/{campaign}', [ \App\Http\Controllers\CampaignController::class, 'show' ]);
 
 
+Route::post('/{adPlatform}/adGroups/bid', [ AdGroupController::class, 'updateBid' ]);

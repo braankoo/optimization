@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UpdateBids;
 use App\Library\Traits\StatsTrait;
+use App\Models\AdGroup;
+use App\Models\Campaign;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use FirstBeatMedia\AdWordManagement\Facades\AdWordManagement;
 
 class AdGroupController extends Controller {
 
     use StatsTrait;
 
+    /**
+     * @param string $adPlatform
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(string $adPlatform, Request $request)
     {
         $data = DB::connection($adPlatform)->table('ad_groups')->selectRaw(
@@ -98,5 +107,25 @@ class AdGroupController extends Controller {
                     ]
 
             ], JsonResponse::HTTP_OK);
+    }
+
+
+    /**
+     * @param string $adPlatform
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateBid(string $adPlatform, Request $request): JsonResponse
+    {
+        collect($request->input('adGroups'))->map(function ($adGroup) use ($adPlatform) {
+
+            return AdGroup::on($adPlatform)->find($adGroup);
+
+        })->groupBy('campaign_id')->each(function ($adGroups, $campaignId) use ($adPlatform, $request) {
+
+            dispatch(new UpdateBids($adPlatform, $campaignId, $request->input('bid'), $adGroups));
+        });
+
+        return response()->json([ 'message' => 'Success', JsonResponse::HTTP_OK ]);
     }
 }

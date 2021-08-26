@@ -18,7 +18,8 @@
         </b-row>
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
-                <b-col lg="2">
+                <b-col lg="3" class="d-flex justify-content-between">
+
                     <b-dropdown
                         id="dropdown-1"
                         text="Columns"
@@ -36,7 +37,14 @@
                         >{{ column.label }}
                         </b-dropdown-item-button>
                     </b-dropdown>
+                    <b-input-group v-if="selected.length > 0" class="ml-1">
+                        <b-form-input v-model="bid" placeholder="Bid Value"></b-form-input>
+                        <b-input-group-append>
+                            <b-button variant="info" @click="updateBid">Update</b-button>
+                        </b-input-group-append>
+                    </b-input-group>
                 </b-col>
+
                 <b-col lg="3">
                     <b-input-group size="sm">
                         <b-form-input
@@ -63,13 +71,18 @@
                 label-sort-asc=""
                 :current-page="currentPage"
                 @update:busy="swapTrTh($event)"
+                ref="adGroups-table"
+                @context-changed="selected=[]"
             >
                 <template #thead-top="data">
-
                     <b-tr>
-
                         <template v-for="field in data.fields">
-                            <template v-if="field.key === 'pl'">
+                            <template v-if="field.key === 'id'">
+                                <b-th>
+                                    <b-form-checkbox @change="selectAll($event)"></b-form-checkbox>
+                                </b-th>
+                            </template>
+                            <template v-else-if="field.key === 'pl'">
                                 <b-th v-if="total[field.key] >0" class="table-success">
                                     {{ total[field.key] }}
                                 </b-th>
@@ -89,16 +102,18 @@
                             </template>
                         </template>
                     </b-tr>
-
                 </template>
                 <template #table-busy class="d-flex justify-content-around text-center">
                     <b-spinner></b-spinner>
                 </template>
 
+                <template #cell(id)="data">
+                    <b-form-checkbox v-model="selected" :value="data.item.id"></b-form-checkbox>
+                </template>
+
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
                 </template>
-
 
             </b-table>
             <b-pagination
@@ -113,7 +128,6 @@
 
 <script>
 import defaultMixin from "../mixins/defaultMixin";
-import moment from "moment";
 
 export default {
     name: "index",
@@ -121,6 +135,11 @@ export default {
     data() {
         return {
             fields: [
+                {
+                    key: 'id',
+                    label: '',
+                    visible: true
+                },
                 {
                     key: 'name',
                     label: 'AdGroup',
@@ -257,6 +276,9 @@ export default {
                     sortable: true
                 },
             ],
+            selected: [],
+            show: false,
+            bid: ''
         }
     },
     methods: {
@@ -281,6 +303,25 @@ export default {
                 return []
             }
         },
+        selectAll($event) {
+            if ($event) {
+                this.selected = [];
+                this.selected = this.$refs['adGroups-table'].localItems.map((el) => el.id);
+            } else {
+                this.selected = [];
+            }
+        },
+        updateBid() {
+            this.$http.post(`/api/${this.$route.params.adPlatform}/adGroups/bid`,
+                {
+                    bid: this.bid,
+                    adGroups: this.selected
+                }
+            ).then((response) => {
+                console.log(response.data);
+            })
+        }
+
     },
 
 }
