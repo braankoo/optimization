@@ -70,7 +70,12 @@ export default {
                     }
 
                 }
+            },
+        $route(to, from) {
+            if (from.name === 'Client Index' && to.name === 'Client Index') {
+                this.$refs.charts.reload(this.filter.startDate, this.filter.endDate);
             }
+        }
     },
     mounted() {
         if (this.$refs.hasOwnProperty('charts')) {

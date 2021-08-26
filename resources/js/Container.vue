@@ -98,7 +98,6 @@ export default {
 
                     ]
                 }
-
             ]
         }
     },
@@ -130,9 +129,9 @@ export default {
     background: -webkit-gradient(linear, left top, left bottom, from(#a31ffb), to(#5d72c5));
     background: linear-gradient(180deg, #a31ffb 0, #5d72c5);
 }
+
 .v-sidebar-menu .vsm--dropdown .vsm--list {
     background: linear-gradient(
-        180deg
-        , #a31ffb 0, #5d72c5);
+        180deg, #a31ffb 0, #5d72c5);
 }
 </style>
