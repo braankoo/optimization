@@ -7,6 +7,7 @@ use App\Console\Commands\GetClients;
 use App\Console\Commands\PrepareAdPlatformData;
 use App\Console\Commands\PrepareData;
 use App\Console\Commands\PrepareWebmastersAndSites;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -33,7 +34,11 @@ class Kernel extends ConsoleKernel {
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        foreach ( [ 'google', 'bing', 'gemini' ] as $platform )
+        {
+            $schedule->command('prepare:date', [ $platform, '--startDate' => Carbon::now()->format('Y-m-d') ])->everyFourHours();
+        }
+
     }
 
     /**
