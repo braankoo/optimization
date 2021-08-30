@@ -37,7 +37,6 @@ class Kernel extends ConsoleKernel {
         foreach ( [ 'google', 'bing', 'gemini' ] as $platform )
         {
             $schedule->command('prepare:date', [ $platform, '--startDate' => Carbon::now()->format('Y-m-d') ])->everyFourHours();
-            $schedule->command('inspire')->everyMinute();
         }
 
     }
