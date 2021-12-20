@@ -282,7 +282,7 @@ export default {
             breadcrumbs: [
                 {
                     text: 'Platforms',
-                    href: '/platform'
+                    href: '/adPlatform'
                 },
                 {
                     text: this.$route.params.adPlatform[0].toLocaleUpperCase() + this.$route.params.adPlatform.slice(1),

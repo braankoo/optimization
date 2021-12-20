@@ -84,7 +84,12 @@
                             </template>
                             <template v-else>
                                 <b-th>
-                                    {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
+                                    {{
+                                        total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) : ''
+                                    }}
                                 </b-th>
                             </template>
                         </template>
@@ -272,7 +277,7 @@ export default {
     methods: {
         async getData(ctx) {
             try {
-                console.log(ctx);
+
                 const response = await this.$http.get(`${ctx.apiUrl}`, {
                     params: {
                         page: ctx.currentPage,

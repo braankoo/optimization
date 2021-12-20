@@ -90,7 +90,10 @@
                             </template>
                             <template v-else>
                                 <b-th>
-                                    {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
+                                    {{ total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) : '' }}
                                 </b-th>
                             </template>
                         </template>
@@ -167,7 +170,10 @@ export default {
                     visible: true,
                     sortable: true,
                     formatter(value, key, item) {
-                        return `$${value}`
+                        return `$${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`
                     }
                 },
                 {
@@ -176,7 +182,10 @@ export default {
                     visible: true,
                     sortable: true,
                     formatter(value, key, item) {
-                        return `$${value}`
+                        return `$${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`
                     }
                 },
                 {
@@ -275,7 +284,7 @@ export default {
             breadcrumbs: [
                 {
                     text: 'Platforms',
-                    href: '/platform'
+                    href: '/adPlatform'
                 },
                 {
                     text: this.$route.params.adPlatform[0].toLocaleUpperCase() + this.$route.params.adPlatform.slice(1),

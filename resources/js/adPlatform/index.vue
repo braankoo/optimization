@@ -3,250 +3,40 @@
         <b-card-body style="background: rgb(108, 110, 250);" class="p-2">
             <b-breadcrumb :items="breadcrumbs" class="mb-0"></b-breadcrumb>
         </b-card-body>
-        <b-row class="d-flex justify-content-end mb-2 mt-2">
-            <b-col lg="2">
-                <b-form-datepicker
-                    v-model="filter.startDate"
-                    placeholder="Start Date"
-                    :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-                />
+        <b-row class="d-flex justify-content-between mb-2 mt-2">
+            <b-col lg="5">
+                <b-button-group>
+                    <b-button
+                        v-for="(btn, idx) in buttons"
+                        :key="idx"
+                        :pressed.sync="btn.state"
+                        variant="outline-success"
+                        @click="getChartData(btn.value,idx)"
+                    >
+                        {{ btn.caption }}
+                    </b-button>
+                </b-button-group>
             </b-col>
-            <b-col lg="2">
-                <b-form-datepicker
-                    v-model="filter.endDate"
-                    placeholder="End Date"
-                    :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-                />
-            </b-col>
-        </b-row>
-        <b-row class="mb-5">
-            <b-col>
-                <b-card>
-                    <h5>Cost VS Income</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.CostVsIncome.data"
-                        :options="charts.CostVsIncome.options"
-                        :datasets-options="{
-                    cost : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'red',
-                        borderWidth: 1
-                    },
-                    earned : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'green',
-                        borderWidth: 1
-                    }}"/>
-
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.CostVsIncome.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'CostVsIncome',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-            <b-col>
-                <b-card>
-                    <h5>P/L</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.PL.data"
-                        :options="charts.PL.options"
-                        :datasets-options="{
-                        pl : {
-                            backgroundColor: 'transparent',
-                            borderColor: 'purple',
-                            borderWidth: 1
-                        }
-                }"
-                    />
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.PL.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'PL',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
+            <b-col lg="4">
+                <b-row>
+                    <b-col lg="6">
+                        <b-form-datepicker
+                            v-model="filter.startDate"
+                            placeholder="Start Date"
+                            :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                        />
+                    </b-col>
+                    <b-col lg="6">
+                        <b-form-datepicker
+                            v-model="filter.endDate"
+                            placeholder="End Date"
+                            :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                        />
+                    </b-col>
+                </b-row>
             </b-col>
         </b-row>
-        <b-row class="mb-5">
-            <b-col>
-                <b-card>
-                    <h5>ProfilesVsUpgrades</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.ProfilesVsUpgrades.data"
-                        :options="charts.ProfilesVsUpgrades.options"
-                        :datasets-options="{
-                   profiles : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'purple',
-                        borderWidth: 1
-                    },
-                    upgrades : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'blue',
-                        borderWidth: 1
-                    }
-
-                }"
-                    />
-
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.ProfilesVsUpgrades.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'ProfilesVsUpgrades',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-            <b-col>
-                <b-card>
-                    <h5>Upgrade Ratio</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.UpgradeRatio.data"
-                        :options="charts.UpgradeRatio.options"
-                        :datasets-options="{
-                    ur : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'blue',
-                        borderWidth: 1
-                    },
-
-                }"
-                    />
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.UpgradeRatio.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'UpgradeRatio',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-            <b-col>
-                <b-card>
-                    <h5>Actual CPA</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.ActualCPA.data"
-                        :options="charts.ActualCPA.options"
-                        :datasets-options="{
-                    cpa : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'blue',
-                        borderWidth: 1
-                    },
-                }"
-                    />
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.ActualCPA.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'ActualCPA',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-        </b-row>
-        <b-row class="mb-5">
-            <b-col>
-                <b-card>
-                    <h5>CTR</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.CTR.data"
-                        :options="charts.CTR.options"
-                        :datasets-options="{
-                    ctr : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'blue',
-                        borderWidth: 1
-                    },
-                }"
-                    />
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.CTR.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'CTR',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-            <b-col>
-                <b-card>
-                    <h5>CR</h5>
-                    <line-chart
-                        style="height:350px"
-                        :chart-data="charts.CR.data"
-                        :options="charts.CR.options"
-                        :datasets-options="{
-                    cr : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'blue',
-                        borderWidth: 1
-                    },
-                }"
-                    />
-                    <b-row class="d-flex justify-content-center">
-                        <b-button-group>
-                            <b-button
-                                v-for="(btn, idx) in charts.CR.buttons"
-                                :key="idx"
-                                :pressed.sync="btn.state"
-                                variant="outline-success"
-                                @click="getChartData(btn.value,'CR',idx)"
-                            >
-                                {{ btn.caption }}
-                            </b-button>
-                        </b-button-group>
-                    </b-row>
-                </b-card>
-            </b-col>
-        </b-row>
+        <default-charts ref="charts" :platform="platform"/>
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
                 <b-col lg="2">
@@ -298,7 +88,12 @@
 
                     <b-tr>
                         <b-th v-for="field in data.fields" v-bind:key="field.key">
-                            {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
+                            {{
+                                total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) : ''
+                            }}
                         </b-th>
                     </b-tr>
                 </template>
@@ -329,20 +124,16 @@
 
 <script>
 import LineChart from "../chart/AdPlatfom/LineChart";
-import moment from "moment";
+import defaultMixin from "../mixins/defaultMixin";
+import DefaultCharts from "../charts/defaultCharts";
 
 export default {
-
-
-    components: {LineChart},
+    components: {DefaultCharts, LineChart},
     name: "index",
+    mixins: [defaultMixin],
     data() {
         return {
             swapped: false,
-            filter: {
-                startDate: moment().subtract('10', 'd').format('YYYY-MM-DD'),
-                endDate: moment().format('YYYY-MM-DD')
-            },
             charts: {
                 CostVsIncome: {
                     request: 'cost|earned',
@@ -380,7 +171,6 @@ export default {
                                     callback: function (value) {
 
                                         return `$${value / 1000}k`;
-
 
                                     }
                                 }
@@ -785,7 +575,10 @@ export default {
                     visible: true,
                     sortable: true,
                     formatter(value, key, item) {
-                        return `$${value}`
+                        return `$ ${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`
                     }
                 },
                 {
@@ -794,7 +587,10 @@ export default {
                     visible: true,
                     sortable: true,
                     formatter(value, key, item) {
-                        return `$${value}`
+                        return `$ ${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`
                     }
                 },
                 {
@@ -896,8 +692,25 @@ export default {
                     href: '/platform'
                 }
             ],
-            total: {}
-
+            total: {},
+            buttons: [
+                {
+                    caption: 'Google',
+                    state: true,
+                    value: 'google'
+                },
+                {
+                    caption: 'Bing',
+                    state: null,
+                    value: 'bing'
+                },
+                {
+                    caption: 'Gemini',
+                    state: null,
+                    value: 'gemini'
+                }
+            ],
+            platform: 'google'
         }
     }
     ,
@@ -924,25 +737,13 @@ export default {
             }
 
         },
-        async getChartData(adPlatform, chart, buttonIndex) {
-
-            this.charts[chart].buttons.forEach((button, index) => {
-                if (index !== buttonIndex) {
-                    button.state = false;
-                }
+        async getChartData(adPlatform, buttonIndex) {
+            this.buttons.forEach((button, index) => {
+                button.state = index === buttonIndex;
             });
+            this.platform = adPlatform;
 
-            this.$http.get(`/api${this.$route.path}/${adPlatform}/chart`, {
-                params: {
-                    type: this.charts[chart].request,
-                    startDate: this.filter.startDate,
-                    endDate: this.filter.endDate
-                }
-            }).then((response) => {
-                this.charts[chart].data.labels = response.data.labels;
-                this.charts[chart].data.datasets = response.data.datasets;
 
-            });
         },
         swapTrTh($event) {
             if (!$event && !this.swapped) {
@@ -957,27 +758,6 @@ export default {
 
             }
         }
-    },
-    mounted() {
-        for (const chartsKey in this.charts) {
-            this.getChartData('google', chartsKey, 0);
-        }
-    },
-    computed: {
-
-        fieldsToShow() {
-            return this.fields.filter(({visible}) => visible === true);
-        }
-    },
-    beforeRouteEnter(to, from, next) {
-        next(vm => {
-            if (to.query.startDate) {
-                vm.filter.startDate = to.query.startDate;
-            }
-            if (to.query.endDate) {
-                vm.filter.endDate = to.query.endDate;
-            }
-        })
     }
 
 }

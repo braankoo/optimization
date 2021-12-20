@@ -3,7 +3,7 @@
         <b-container :fluid="true">
             <b-row>
                 <b-col cols="1">
-                    <sidebar-menu :menu="menu" width="150px">
+                    <sidebar-menu :menu="menu" width="125px">
                         <span slot="toggle-icon"><i class="fa fa fa-arrows-h"></i></span>
                         <span slot="footer" class="text-center"><a href=""
                                                                    class="vsm--link vsm--link_level-1"

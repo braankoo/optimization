@@ -83,6 +83,8 @@
                     />
                 </b-card>
             </b-col>
+        </b-row>
+        <b-row class="mb-5">
             <b-col>
                 <b-card>
                     <h5>Actual CPA</h5>
@@ -143,8 +145,15 @@
 <script>
 import LineChart from "../chart/LineChart";
 
+
 export default {
     name: "defaultCharts",
+    props: {
+        platform: {
+            type: String,
+            required: false
+        }
+    },
     components: {LineChart},
     data() {
         return {
@@ -443,8 +452,17 @@ export default {
     },
     methods: {
         reload(startDate, endDate) {
+            //refactor
+            let apiUrl = null;
+
+            if (['google', 'bing', 'gemini'].includes(this.platform)) {
+                apiUrl = `/api${this.$route.path}/${this.platform}/chart`;
+            } else {
+                apiUrl = `/api${this.$route.path}/chart`;
+            }
+
             for (const chart in this.charts) {
-                this.$http.get(`/api${this.$route.path}/chart`, {
+                this.$http.get(apiUrl, {
                     params: {
                         type: this.charts[chart].request,
                         startDate: startDate,
@@ -452,7 +470,6 @@ export default {
                     }
                 }).then((response) => {
                     this.charts[chart].data.labels = response.data.labels;
-
                     this.charts[chart].data.datasets = response.data.datasets;
                 });
             }

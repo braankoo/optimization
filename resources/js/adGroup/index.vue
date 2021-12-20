@@ -98,7 +98,10 @@
                             </template>
                             <template v-else>
                                 <b-th>
-                                    {{ total.hasOwnProperty(field.key) ? total[field.key] : '' }}
+                                    {{ total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) : '' }}
                                 </b-th>
                             </template>
                         </template>
