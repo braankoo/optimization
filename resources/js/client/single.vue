@@ -20,7 +20,11 @@
             </b-col>
         </b-row>
 
-        <default-charts ref="charts"/>
+        <default-charts
+            ref="charts"
+            :api-url="`/api${this.$route.path}/chart`"
+            :date-range="{start: filter.startDate, end:filter.endDate}"
+        />
 
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
@@ -90,10 +94,12 @@
                             </template>
                             <template v-else>
                                 <b-th>
-                                    {{ total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }) : '' }}
+                                    {{
+                                        total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) : ''
+                                    }}
                                 </b-th>
                             </template>
                         </template>
@@ -322,7 +328,6 @@ export default {
 
         }
     }
-
 
 
 }

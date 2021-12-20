@@ -149,9 +149,19 @@ import LineChart from "../chart/LineChart";
 export default {
     name: "defaultCharts",
     props: {
-        platform: {
+        apiUrl: {
             type: String,
-            required: false
+            required: true,
+        },
+        dateRange: {
+            start: {
+                type: String,
+                required: true,
+            },
+            end: {
+                type: String,
+                required: true,
+            }
         }
     },
     components: {LineChart},
@@ -452,17 +462,8 @@ export default {
     },
     methods: {
         reload(startDate, endDate) {
-            //refactor
-            let apiUrl = null;
-
-            if (['google', 'bing', 'gemini'].includes(this.platform)) {
-                apiUrl = `/api${this.$route.path}/${this.platform}/chart`;
-            } else {
-                apiUrl = `/api${this.$route.path}/chart`;
-            }
-
             for (const chart in this.charts) {
-                this.$http.get(apiUrl, {
+                this.$http.get(this.apiUrl, {
                     params: {
                         type: this.charts[chart].request,
                         startDate: startDate,
@@ -474,6 +475,25 @@ export default {
                 });
             }
         }
+    },
+    watch: {
+        apiUrl: function (newUrl) {
+            this.reload(this.dateRange.start, this.dateRange.end);
+        },
+        'dateRange.start': {
+            handler: function (start) {
+                this.reload(start, this.dateRange.end);
+            }
+        },
+        'dateRange.end': {
+            handler: function (end) {
+                this.reload(this.dateRange.start, end);
+            }
+        }
+    }
+    ,
+    mounted() {
+        this.reload(this.dateRange.start, this.dateRange.end);
     }
 }
 </script>

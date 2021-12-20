@@ -19,7 +19,9 @@
                 />
             </b-col>
         </b-row>
-        <default-charts ref="charts"/>
+        <default-charts
+            :api-url="`/api${this.$route.path}/chart`"
+            :date-range="{start: filter.startDate, end:filter.endDate}"/>
         <b-card>
             <b-row class="d-flex justify-content-between mb-2">
                 <b-col lg="3" class="d-flex justify-content-between">
