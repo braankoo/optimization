@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-
+Route::post('/login', 'App\Http\Controllers\LoginController@authenticate');
+Route::middleware('auth:sanctum')->post('/logout', 'App\Http\Controllers\LoginController@logout');
 Route::view('/{any}', 'index')->where('any', '(?!api|storage|app|public).*');

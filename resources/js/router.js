@@ -9,6 +9,7 @@ import adGroupIndex from "./adGroup/index";
 
 
 import Container from "./Container";
+import Login from "./components/Login";
 
 
 const router = new VueRouter(
@@ -19,13 +20,25 @@ const router = new VueRouter(
 
         routes: [
             {
-                path: '/',
-                redirect: '/adPlatforms'
-            },
+                path: '/login',
+                component: Login,
+                name: 'Login'
 
+            },
+            {
+                path: '/',
+                redirect: '/adPlatforms',
+                name: 'Ad Platforms',
+                meta: {
+                    requiresAuth: true
+                },
+            },
             {
                 path: '/adPlatforms',
                 component: Container,
+                meta: {
+                    requiresAuth: true
+                },
                 children: [
                     {
                         path: '',
@@ -36,6 +49,9 @@ const router = new VueRouter(
             {
                 path: '/:adPlatform',
                 component: Container,
+                meta: {
+                    requiresAuth: true
+                },
                 children: [
                     {
                         path: 'client',
@@ -65,6 +81,27 @@ const router = new VueRouter(
 
         ]
     });
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (localStorage.getItem('token') == null) {
+            next({
+                name: 'Login',
+                params: {nextUrl: to.fullPath}
+            })
+        }
+
+        window.axios.interceptors.request.use(request => {
+            request.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+            return request;
+        });
+
+        next();
+
+    } else {
+        next();
+    }
+});
 
 
 export default router;

@@ -103,10 +103,8 @@ export default {
     },
     methods: {
         logout() {
-            this.$http.post('/logout').then(() => {
-                localStorage.removeItem('token');
-                this.$router.push({'name': 'Login'});
-            })
+            localStorage.removeItem('token');
+            this.$router.push({'name': 'Login'});
         }
     }
 }
