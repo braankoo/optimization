@@ -45,7 +45,9 @@
                     <template v-if="selected.length > 0" class="ml-1">
                         <b-form-input type="number" v-model="bid" placeholder="Bid Value" :state="state" class="ml-1"/>
                         <b-input-group-append>
-                            <b-button variant="info" @click="updateBid" :disabled="bid.length === 0">Update</b-button>
+                            <b-button variant="info" @click="updateBid(bid, selected)" :disabled="bid.length === 0">
+                                Update
+                            </b-button>
                         </b-input-group-append>
                     </template>
                 </b-col>
@@ -114,7 +116,17 @@
                 <template #table-busy class="d-flex justify-content-around text-center">
                     <b-spinner></b-spinner>
                 </template>
+                <template #cell(bid)="data">
 
+                    <b-input-group>
+                        <b-form-input :value="data.item.bid" :ref="data.index"/>
+                        <b-input-group-append>
+                            <b-button variant="outline-success"
+                                      @click="updateBid($refs[data.index].$el.value,[data.item.id])">&#10003;
+                            </b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </template>
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
                 </template>
@@ -151,6 +163,11 @@ export default {
                     visible: true,
                     sortable: true
 
+                },
+                {
+                    key: 'bid',
+                    label: 'Target CPA',
+                    visible: true,
                 },
                 {
                     key: 'clicks',
@@ -220,7 +237,7 @@ export default {
                 {
                     key: 'avg_position',
                     label: 'Avg Position',
-                    visible: true,
+                    visible: false,
                     sortable: true
                 },
                 {
@@ -335,11 +352,11 @@ export default {
                 this.selected = [];
             }
         },
-        updateBid() {
+        updateBid(bid, adGroups) {
             this.$http.post(`/api/${this.$route.params.adPlatform}/adGroups/bid`,
                 {
-                    bid: this.bid,
-                    adGroups: this.selected
+                    bid: bid,
+                    adGroups: adGroups
                 }
             ).then((response) => {
                 this.state = true;
@@ -348,7 +365,6 @@ export default {
                 }, 3000);
             })
         }
-
     },
 
 }

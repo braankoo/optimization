@@ -123,6 +123,7 @@ class CampaignController extends Controller {
             "
              ad_groups.name as name,
              ad_groups.id as id,
+             TRUNCATE(bid/1000000,2) as bid,
              sum(clicks) as clicks,
              sum(impressions) as impressions,
              TRUNCATE((sum(cost) / 1000000),2) as cost,
