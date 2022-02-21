@@ -37,12 +37,17 @@ class Kernel extends ConsoleKernel {
         foreach ( [ 'google', 'bing', 'gemini' ] as $platform )
         {
             $schedule->command('prepare:data', [ $platform, '--startDate' => Carbon::yesterday()->format('Y-m-d') ])->dailyAt('12:00');
-
             $schedule->command('prepare:data', [ $platform, '--startDate' => Carbon::now()->format('Y-m-d') ])->dailyAt('15:00');
             $schedule->command('prepare:data', [ $platform, '--startDate' => Carbon::now()->format('Y-m-d') ])->dailyAt('18:00');
             $schedule->command('prepare:data', [ $platform, '--startDate' => Carbon::now()->format('Y-m-d') ])->dailyAt('21:00');
 
         }
+        
+        foreach ( [ 'google', 'bing', 'gemini' ] as $platform )
+        {
+            $schedule->command('prepare:ad-platform-data', [ $platform ] )->dailyAt('14:00');
+        }
+
 
 
     }
