@@ -55,7 +55,6 @@ class GetCampaigns implements ShouldQueue {
             {
                 $data[$i] = AdWordManagement::response($this->adPlatform)->campaign($campaigns[$i]);
                 $data[$i]['client_id'] = $this->client->id;
-
             }
             Campaign::on($this->adPlatform)->upsert($data, [ 'id' ], array_keys($data[0]));
         }
