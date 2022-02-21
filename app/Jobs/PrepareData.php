@@ -34,11 +34,6 @@ class PrepareData implements ShouldQueue {
     public string $endDate;
 
     /**
-     * @var int
-     */
-    public int $timeout = 360;
-
-    /**
      * Create a new job instance.
      *
      * @return void
@@ -65,24 +60,12 @@ class PrepareData implements ShouldQueue {
         Operator::generateTemporaryTables($adPlatform);
 
         $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
-            if ($this->adPlatform == 'gemini')
-            {
-                return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetAds($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            } else
-            {
-                return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            }
-        });
 
+            return [
+                new GetReport($client, $this->startDate, $this->endDate)
+            ];
+
+        });
 
         Bus::batch($jobs)
             ->then(function (Batch $batch) use ($adPlatform, $startDate, $endDate) {
