@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -12,7 +13,7 @@ class PrepareAdPlatformData extends Command {
      *
      * @var string
      */
-    protected $signature = 'prepare:ad-platform-data {adPlatform} {--startDate=yesterday} {--endDate=today}';
+    protected $signature = 'prepare:ad-platform-data {adPlatform}';
 
     /**
      * The console command description.
@@ -39,11 +40,11 @@ class PrepareAdPlatformData extends Command {
     public function handle()
     {
 
-        \App\Jobs\PrepareAdPlatformData::dispatch(
-            $this->argument('adPlatform'),
-            Carbon::parse($this->option('startDate'))->format('Y-m-d'),
-            Carbon::parse($this->option('endDate'))->format('Y-m-d'),
-        );
+        Client::on($this->argument('adPlatform'))->each(function($client) {
+            \App\Jobs\PrepareAdPlatformData::dispatch($client);
+        });
+
+
 
         return 0;
 

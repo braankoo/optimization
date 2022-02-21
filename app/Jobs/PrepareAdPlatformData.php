@@ -21,9 +21,9 @@ class PrepareAdPlatformData implements ShouldQueue {
 
 
     /**
-     * @var string
+     * @var \App\Models\Client
      */
-    public string $adPlatform;
+    public Client $client;
     /**
      * @var string
      */
@@ -38,11 +38,9 @@ class PrepareAdPlatformData implements ShouldQueue {
      *
      * @return void
      */
-    public function __construct(string $adPlatform, string $startDate, string $endDate)
+    public function __construct(Client $client)
     {
-        $this->adPlatform = $adPlatform;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->client = $client;
     }
 
     /**
@@ -53,37 +51,23 @@ class PrepareAdPlatformData implements ShouldQueue {
      */
     public function handle()
     {
+        if ($this->client->getConnectionName() == 'gemini')
+        {
+            $jobs = [
+                new \App\Jobs\GetCampaigns($this->client),
+                new \App\Jobs\GetAdGroups($this->client),
+                new GetAds($this->client)
+            ];
+        } else
+        {
+            $jobs = [
+                new \App\Jobs\GetCampaigns($this->client),
+                new \App\Jobs\GetAdGroups($this->client)
+            ];
+        }
 
-
-        $adPlatform = $this->adPlatform;
-
-        Operator::generateTemporaryTables($this->adPlatform);
-
-        $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
-
-            if ($this->adPlatform == 'gemini')
-            {
-                return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetAds($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            } else
-            {
-                return [
-                    new \App\Jobs\GetCampaigns($client),
-                    new \App\Jobs\GetAdGroups($client),
-                    new GetReport($client, $this->startDate, $this->endDate)
-                ];
-            }
-        });
-        
         Bus::batch($jobs)
             ->allowFailures(false)
-            ->catch(function (Batch $batch) use ($adPlatform) {
-                Operator::dropTemporaryTable($adPlatform);
-            })
             ->dispatch();
 
     }
