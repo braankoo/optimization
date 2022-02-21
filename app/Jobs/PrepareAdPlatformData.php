@@ -51,22 +51,12 @@ class PrepareAdPlatformData implements ShouldQueue {
      */
     public function handle()
     {
-        if ($this->client->getConnectionName() == 'gemini')
-        {
-            $jobs = [
-                new \App\Jobs\GetCampaigns($this->client),
-                new \App\Jobs\GetAdGroups($this->client),
-                new GetAds($this->client)
-            ];
-        } else
-        {
-            $jobs = [
-                new \App\Jobs\GetCampaigns($this->client),
-                new \App\Jobs\GetAdGroups($this->client)
-            ];
-        }
 
-        Bus::batch($jobs)
+        Bus::batch([
+            new \App\Jobs\GetCampaigns($this->client),
+            new \App\Jobs\GetAdGroups($this->client)
+
+        ])
             ->allowFailures(false)
             ->dispatch();
 
