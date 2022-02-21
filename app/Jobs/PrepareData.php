@@ -60,13 +60,11 @@ class PrepareData implements ShouldQueue {
         Operator::generateTemporaryTables($adPlatform);
 
         $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
-
-
             return [
+                new GetCampaigns($client),
+                new GetAdGroups($client),
                 new GetReport($client, $this->startDate, $this->endDate)
             ];
-            
-
         });
 
 
