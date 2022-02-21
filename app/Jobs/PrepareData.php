@@ -34,6 +34,11 @@ class PrepareData implements ShouldQueue {
     public string $endDate;
 
     /**
+     * @var int
+     */
+    public int $timeout = 360;
+
+    /**
      * Create a new job instance.
      *
      * @return void
