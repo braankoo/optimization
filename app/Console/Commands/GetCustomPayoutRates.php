@@ -83,6 +83,8 @@ class GetCustomPayoutRates extends Command {
                 });
 
             });
+
+        return 1;
     }
 
     /**
