@@ -98,10 +98,12 @@
                             </template>
                             <template v-else>
                                 <b-th>
-                                    {{ total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }) : '' }}
+                                    {{
+                                        total.hasOwnProperty(field.key) ? Number(total[field.key]).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) : ''
+                                    }}
                                 </b-th>
                             </template>
                         </template>
@@ -145,6 +147,13 @@ export default {
                 {
                     key: 'name',
                     label: 'AdGroup',
+                    visible: true,
+                    sortable: true
+
+                },
+                {
+                    key: 'target_cpa',
+                    label: 'Target CPA',
                     visible: true,
                     sortable: true
 

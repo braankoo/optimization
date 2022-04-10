@@ -12,4 +12,10 @@ class Webmaster extends Model {
     public $timestamps = false;
 
     protected $fillable = [ 'name', 'device' ];
+
+    public function apiKeys(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ApiKey::class);
+    }
+
 }

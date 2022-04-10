@@ -145,6 +145,7 @@
 import defaultCharts from "../charts/defaultCharts";
 import defaultMixin from "../mixins/defaultMixin";
 
+
 export default {
     name: "single",
     components: {defaultCharts},
@@ -363,7 +364,14 @@ export default {
                 setTimeout(() => {
                     this.state = null;
                 }, 3000);
-            })
+                this.$toastr.s("Bid update initialized");
+            }).catch((error) => {
+                this.state = false;
+                setTimeout(() => {
+                    this.state = null;
+                }, 3000);
+                this.$toastr.e("Bid update failed");
+            });
         }
     },
 

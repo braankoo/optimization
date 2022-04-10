@@ -126,6 +126,10 @@ class ClientController extends Controller {
              sum(impressions) as impressions,
              ROUND(TRUNCATE((sum(cost) / 1000000),2),2) as cost,
              TRUNCATE((sum(earned) / 1000000),2) as earned,
+             CASE
+                WHEN payout_rate IS NULL THEN 0
+                ELSE TRUNCATE(payout_rate / 1000000,2)
+             END AS payout_rate,
              TRUNCATE(( sum(cost) / 1000000 ) / sum(profile),2) as actual_cpa,
              TRUNCATE(( sum(cost) / 1000000 ) / sum(upgrade),2)   as actual_cps,
              TRUNCATE(((sum(cost) / sum(clicks)) / 1000000),2) as avg_cpc,
@@ -190,6 +194,8 @@ class ClientController extends Controller {
             ->orderBy(!empty($request->input('sortBy')) ? $request->input('sortBy') : 'name', $request->input('sortDesc') == 'true' ? 'ASC' : 'DESC')
             ->groupBy('campaigns.id')
             ->get();
+
+
 
 
         $total = $this->prepareTotals(collect($total));

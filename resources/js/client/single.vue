@@ -195,6 +195,17 @@ export default {
                     }
                 },
                 {
+                    key: 'payout_rate',
+                    visible: true,
+                    sortable: true,
+                    formatter(value, key, item) {
+                        return `$${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`
+                    }
+                },
+                {
                     key: 'actual_cpa',
                     label: 'Actual CPA',
                     visible: false,
