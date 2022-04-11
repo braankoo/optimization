@@ -8,7 +8,6 @@ use App\Jobs\GetAffiliateData;
 use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
-use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Bus;
 
@@ -34,7 +33,7 @@ class DownloadAffiliateData implements ShouldQueue {
      */
     public string $endDate;
 
-    public int $timeout = 3600;
+    public $timeout = 3600;
 
     /**
      * @var bool
@@ -43,9 +42,9 @@ class DownloadAffiliateData implements ShouldQueue {
 
     public int $delay = 120;
     /**
-     * @var \Illuminate\Bus\PendingBatch
+     * @var \Illuminate\Bus\Batch
      */
-    public PendingBatch $batch;
+    public Batch $batch;
     /**
      * @var array
      */
@@ -72,16 +71,6 @@ class DownloadAffiliateData implements ShouldQueue {
     {
 
 
-        $this->batch = Bus::batch([])
-            ->then(
-                function (Batch $batch) use ($event) {
-                    event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
-                })
-            ->catch(function (Batch $batch) use ($event) {
-
-            })->onQueue('affiliate');
-
-
         Campaign::on($event->adPlatform)
             ->with([ 'webmasters', 'client.platforms' ])
             ->get()
@@ -106,12 +95,21 @@ class DownloadAffiliateData implements ShouldQueue {
 
             });
 
-        foreach ( array_chunk($this->jobs, 1000) as $jobChunk )
-        {
-            $this->batch->add($jobChunk);
-        }
+        $chunks = array_chunk($this->jobs, 1000);
 
-        $this->batch->dispatch();
+        $this->batch = Bus::batch([ $chunks[0] ])
+            ->then(
+                function (Batch $batch) use ($event) {
+                    event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
+                })
+            ->catch(function (Batch $batch) use ($event) {
+
+            })->onQueue('affiliate')->dispatch();
+
+        for ( $i = 1; $i < count($chunks); $i ++ )
+        {
+            $this->batch->add($chunks[$i]);
+        }
 
 
     }
