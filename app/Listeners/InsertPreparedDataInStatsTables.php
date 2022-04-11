@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class InsertPreparedDataInStatsTables implements ShouldQueue {
 
 
-    public ?string $queue = 'listeners';
+    public  $queue = 'listeners';
     /**
      * Create the event listener.
      *
@@ -39,7 +39,7 @@ class InsertPreparedDataInStatsTables implements ShouldQueue {
         } catch ( \Exception $e )
         {
             DB::connection($event->adPlatform)->rollBack();
-            dd($e->getMessage());
+            throw $e;
         }
 
 
