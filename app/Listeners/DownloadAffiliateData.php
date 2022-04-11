@@ -8,6 +8,7 @@ use App\Jobs\GetAffiliateData;
 use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Bus;
 
@@ -33,7 +34,7 @@ class DownloadAffiliateData implements ShouldQueue {
      */
     public string $endDate;
 
-    public $timeout = 3600;
+    public int $timeout = 3600;
 
     /**
      * @var bool
@@ -42,9 +43,9 @@ class DownloadAffiliateData implements ShouldQueue {
 
     public int $delay = 120;
     /**
-     * @var \Illuminate\Bus\Batch
+     * @var \Illuminate\Bus\PendingBatch
      */
-    public Batch $batch;
+    public PendingBatch $batch;
     /**
      * @var array
      */
@@ -78,7 +79,7 @@ class DownloadAffiliateData implements ShouldQueue {
                 })
             ->catch(function (Batch $batch) use ($event) {
 
-            })->onQueue('affiliate')->dispatch();
+            })->onQueue('affiliate');
 
 
         Campaign::on($event->adPlatform)
@@ -109,6 +110,8 @@ class DownloadAffiliateData implements ShouldQueue {
         {
             $this->batch->add($jobChunk);
         }
+
+        $this->batch->dispatch();
 
 
     }
