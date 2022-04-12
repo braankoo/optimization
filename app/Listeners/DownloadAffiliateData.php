@@ -40,7 +40,7 @@ class DownloadAffiliateData implements ShouldQueue {
      */
     public bool $failOnTimeout = true;
 
-    public int $delay = 120;
+    public int $delay = 5;
     /**
      * @var \Illuminate\Bus\Batch
      */
@@ -97,7 +97,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
         $chunks = array_chunk($this->jobs, 1000);
 
-        $this->batch = Bus::batch([ $chunks[0] ])
+        $this->batch = Bus::batch([ $this->jobs ])
             ->then(
                 function (Batch $batch) use ($event) {
                     event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));
@@ -106,10 +106,10 @@ class DownloadAffiliateData implements ShouldQueue {
 
             })->onQueue('affiliate')->dispatch();
 
-        for ( $i = 1; $i < count($chunks); $i ++ )
-        {
-            $this->batch->add($chunks[$i]);
-        }
+//        for ( $i = 1; $i < count($chunks); $i ++ )
+//        {
+//            $this->batch->add($chunks[$i]);
+//        }
 
 
     }
