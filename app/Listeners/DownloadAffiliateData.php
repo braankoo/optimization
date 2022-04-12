@@ -97,7 +97,7 @@ class DownloadAffiliateData implements ShouldQueue {
 
         $chunks = array_chunk($this->jobs, 1000);
 
-        $this->batch = Bus::batch($this->jobs)
+        Bus::batch($this->jobs)
             ->then(
                 function (Batch $batch) use ($event) {
                     event(new AffiliateDataDownloaded($event->adPlatform, $event->startDate, $event->endDate));

@@ -6,12 +6,13 @@ use App\Events\AffiliateDataDownloaded;
 use App\Library\SQL\Operator;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class InsertPreparedDataInStatsTables implements ShouldQueue {
 
 
-    public  $queue = 'listeners';
+    public $queue = 'listeners';
     /**
      * Create the event listener.
      *
@@ -39,6 +40,7 @@ class InsertPreparedDataInStatsTables implements ShouldQueue {
         } catch ( \Exception $e )
         {
             DB::connection($event->adPlatform)->rollBack();
+            Log::debug($e->getMessage());;
             throw $e;
         }
 
