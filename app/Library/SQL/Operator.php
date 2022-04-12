@@ -68,7 +68,7 @@ class Operator {
         {
             while ( DB::connection($adPlatform)->table($table)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->count() > 0 )
             {
-                DB::connection($adPlatform)->table($table)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->take(1000)->delete();
+                DB::connection($adPlatform)->table($table)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->take(10000)->delete();
             }
         }
     }
