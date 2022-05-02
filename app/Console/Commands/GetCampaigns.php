@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\GetAdGroups;
 use App\Jobs\SetUpCampaignWebmasterAndSite;
 use App\Library\Reports\SedItFactory;
 use App\Library\Reports\SqlOperatorFactory;
@@ -21,7 +22,7 @@ class GetCampaigns extends Command {
      *
      * @var string
      */
-    protected $signature = 'get:campaigns';
+    protected $signature = 'get:campaigns {adPlatform}';
 
     /**
      * The console command description.
@@ -47,18 +48,14 @@ class GetCampaigns extends Command {
      */
     public function handle()
     {
-        Operator::generateTemporaryTables('bing');
-        Client::on('bing')->take(1)->get()->each(function ($client) {
 
-            $report = AdWordManagement::report($client)->get('2021-07-01', '2021-07-10');
+        Client::on($this->argument('adPlatform'))->each(function($client) {
+//            \App\Jobs\GetCampaigns::dispatch($client);
 
-            $preparedCVS = SedItFactory::make($client->getConnectionName())->prepareForSql($report);
+            GetAdGroups::dispatch($client);
 
-            SqlOperatorFactory::make($client->getConnectionName())->loadToTemporaryTable($preparedCVS);
-            Operator::insertToStatsTable('bing', '2021-07-01', '2021-07-10');
         });
 
 
-        return 0;
     }
 }

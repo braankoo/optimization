@@ -25,7 +25,7 @@ class GetCampaigns implements ShouldQueue {
     public ?string $adPlatform;
 
 
-    public int $tries = 5;
+    public int $tries = 1;
 
 
     public array $backoff = [ 30, 60, 120, 360 ];

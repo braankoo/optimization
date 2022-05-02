@@ -17,6 +17,7 @@ trait StatsTrait {
         if (!empty($data))
         {
 
+
             $keys = array_keys(get_object_vars($data[0]));
             $total = [];
 

@@ -18,7 +18,7 @@ class GetAdGroups implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
 
-    public int $tries = 5;
+    public int $tries = 1;
 
 
     public array $backoff = [ 30, 60, 120, 360 ];
@@ -79,6 +79,7 @@ class GetAdGroups implements ShouldQueue {
             for ( $i = 0; $i < count($chunk); $i ++ )
             {
                 $data[$i] = AdWordManagement::response($this->client->getConnectionName())->adGroup($chunk[$i]);
+
             }
 
             AdGroup::on($this->client->getConnectionName())->upsert($data, [ 'id' ], array_keys($data[0]));

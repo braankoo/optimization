@@ -52,6 +52,8 @@ class GetCustomPayoutRates extends Command {
             ->with('apiKeys')
             ->each(function ($webmaster) {
                 $webmaster->apiKeys->each(function ($apiKey) use ($webmaster) {
+
+
                     $data = $this->getData($webmaster, $apiKey);
                     if (!empty($data))
                     {
@@ -78,6 +80,22 @@ class GetCustomPayoutRates extends Command {
                                 })
                                 ->whereNotIn('id', Arr::flatten($updatedCampaigns))
                                 ->update([ 'payout_rate' => (int) $allWebsitesData[0]['payout'] * 1000000 ]);
+
+                            foreach ( [ 'tab', 'mob' ] as $device )
+                            {
+
+                                $webmasterWithDevice = str_replace('google', 'google' . $device, $webmaster->name);
+                                if ($webmasterWithDevice = Webmaster::on($this->argument('platform'))->where('name', '=', $webmasterWithDevice)->first())
+                                {
+                                    Campaign::on($this->argument('platform'))
+                                        ->whereHas('webmasters', function ($query) use ($webmasterWithDevice) {
+                                            $query->where('id', '=', $webmasterWithDevice->id);
+                                        })
+                                        ->whereNotIn('id', Arr::flatten($updatedCampaigns))
+                                        ->update([ 'payout_rate' => (int) $allWebsitesData[0]['payout'] * 1000000 ]);
+                                }
+
+                            }
                         }
                     }
                 });

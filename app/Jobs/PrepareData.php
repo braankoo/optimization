@@ -72,7 +72,7 @@ class PrepareData implements ShouldQueue {
                 event(new AdPlatformDataDownloaded($adPlatform, $startDate, $endDate));
             })
             ->catch(function (Batch $batch) use ($adPlatform) {
-
+                $batch->cancel();
             })
             ->dispatch();
     }

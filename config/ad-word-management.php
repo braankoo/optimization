@@ -21,9 +21,9 @@ return [
                         'database' => 'status',
                         'method'   => 'getStatus'
                     ],
-                    'Amount' => [
+                    'Campaign_Budget' => [
                         'database' => 'budget',
-                        'method'   => 'getBudget.getAmount.getMicroAmount'
+                        'method'   => 'getCampaignBudget'
                     ],
 
                 ],
@@ -37,9 +37,9 @@ return [
                     'database' => 'id',
                     'method'   => 'getId'
                 ],
-                'CampaignId'   => [
+                'Campaign'   => [
                     'database' => 'campaign_id',
-                    'method'   => 'getCampaignId'
+                    'method'   => 'getCampaign'
                 ],
                 'Name'         => [
                     'database' => 'name',
@@ -49,10 +49,9 @@ return [
                     'database' => 'status',
                     'method'   => 'getStatus'
                 ],
-                'TargetCpaBid' => [
+                'Target_Cpa_Micros' => [
                     'database' => 'bid',
-                    'method'   => 'getBiddingStrategyConfiguration.getBids',
-                    'custom'   => 'getGoogleAdGroupBid'
+                    'method'   => 'getTargetCpaMicros'
                 ]
             ],
             'status' => [
