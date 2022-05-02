@@ -22,11 +22,10 @@ class SqlOperator implements SqlOperatorInterface {
                LINES
                    TERMINATED BY '\n'
                IGNORE 1 ROWS
-               (@Ad_group_ID, @Impressions, @Avg_position, @Clicks, @Cost, @Day)
+               (@Ad_group_ID, @Impressions, @Clicks, @Cost, @Day)
 
                SET ad_group_id = @Ad_group_ID,
                    impressions = @Impressions,
-                   avg_position = @Avg_position,
                    clicks = @Clicks,
                    cost = @Cost,
                    created_at = @Day
