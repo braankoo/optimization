@@ -59,7 +59,7 @@ class PrepareData implements ShouldQueue {
 
         Operator::generateTemporaryTables($adPlatform);
 
-        $jobs = Client::on($this->adPlatform)->get()->map(function ($client) {
+        $jobs = Client::on($this->adPlatform)->whereNotIn('id', [ 1635488681, 7612237052 ])->get()->map(function ($client) {
 
             return [
                 new GetReport($client, $this->startDate, $this->endDate)
