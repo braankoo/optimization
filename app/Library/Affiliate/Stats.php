@@ -107,7 +107,7 @@ class Stats {
                     || $row['earned'] > 0
                     || $row['upgrade'] > 0
                 )
-                && (preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']) || preg_match('/(Exact|Broad|Search) - Search/', $row['adgroup']));
+                && (preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']) || preg_match('/(Exact|Broad|Phrase) - Search/', $row['adgroup']));
         });
 
         $data = array_map(function ($row) {
