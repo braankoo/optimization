@@ -107,26 +107,31 @@ class Stats {
                     || $row['earned'] > 0
                     || $row['upgrade'] > 0
                 )
-                && preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']);
+                && (preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup']) || preg_match('/(Exact|Broad|Search) - Search/', $row['adgroup']));
         });
 
         $data = array_map(function ($row) {
-            preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup'], $adGroup);
+
+            if (preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup'], $adGroup))
+            {
+                $adGroup = $this->findAdGroupId($adGroup[0]);
+            } else
+            {
+                $adGroup = $this->findAdGroupByName($row['adgroup']);
+            }
 
             return [
                 'created_at'  => $row['date'],
                 'profile'     => $row['profile'],
                 'upgrade'     => $row['upgrade'],
                 'earned'      => (int) $row['earned'] * 1000000,
-                'ad_group_id' => $this->findAdGroupId($adGroup[0])
+                'ad_group_id' => $this->findAdGroupId($adGroup)
             ];
         }, $data);
 
+
         return array_values($data);
     }
-
-
-
 
 
     /**
@@ -166,6 +171,15 @@ class Stats {
             default:
                 return $adGroupId;
         }
+    }
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    private function findAdGroupByName(string $name): int
+    {
+        return AdGroup::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->first()->id;
     }
 
 }
