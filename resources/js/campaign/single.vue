@@ -167,6 +167,11 @@ export default {
                 },
                 {
                     key: 'bid',
+                    label: 'Update CPA',
+                    visible: true,
+                },
+                {
+                    key: 'target_cpa',
                     label: 'Target CPA',
                     visible: true,
                 },
