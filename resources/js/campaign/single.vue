@@ -117,7 +117,6 @@
                     <b-spinner></b-spinner>
                 </template>
                 <template #cell(bid)="data">
-
                     <b-input-group>
                         <b-form-input :value="data.item.bid" :ref="data.index"/>
                         <b-input-group-append>
@@ -126,6 +125,9 @@
                             </b-button>
                         </b-input-group-append>
                     </b-input-group>
+                </template>
+                <template #cell(target_cpa)="data">
+                    {{ data.item.target_cpa == null ? 0 : data.item.target_cpa }}
                 </template>
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
@@ -166,6 +168,7 @@ export default {
 
                 },
                 {
+                    tdClass: 'min-w-150',
                     key: 'bid',
                     label: 'Update CPA',
                     visible: true,
@@ -383,6 +386,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.min-w-150 {
+    min-width: 150px;
+}
 </style>

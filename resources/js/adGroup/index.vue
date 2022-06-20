@@ -115,6 +115,19 @@
                 <template #cell(id)="data">
                     <b-form-checkbox v-model="selected" :value="data.item.id"></b-form-checkbox>
                 </template>
+                <template #cell(bid)="data">
+                    <b-input-group>
+                        <b-form-input :value="data.item.bid" :ref="data.index"/>
+                        <b-input-group-append>
+                            <b-button variant="outline-success"
+                                      @click="updateBid($refs[data.index].$el.value,[data.item.id])">&#10003;
+                            </b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </template>
+                <template #cell(target_cpa)="data">
+                    {{ data.item.target_cpa == null ? 'Payout rate missing' : data.item.target_cpa }}
+                </template>
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
                 </template>
@@ -150,6 +163,12 @@ export default {
                     visible: true,
                     sortable: true
 
+                },
+                {
+                    tdClass: 'min-w-150',
+                    key: 'bid',
+                    label: 'Update CPA',
+                    visible: true,
                 },
                 {
                     key: 'target_cpa',
@@ -343,6 +362,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.min-w-150 {
+    min-width: 150px;
+}
 </style>

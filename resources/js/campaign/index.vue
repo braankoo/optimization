@@ -111,6 +111,9 @@
                         {{ data.item.name }}
                     </router-link>
                 </template>
+                <template #cell(payout_rate)="data">
+                    {{ data.item.payout_rate == 0 ? 'Missing' : data.item.payout_rate }}
+                </template>
 
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
@@ -142,6 +145,10 @@ export default {
                     visible: true,
                     sortable: true
 
+                },
+                {
+                    key: 'payout_rate',
+                    visible: true
                 },
                 {
                     key: 'clicks',

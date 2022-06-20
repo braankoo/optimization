@@ -27,6 +27,7 @@ class CampaignController extends Controller {
              campaigns.id as id,
              sum(clicks) as clicks,
              sum(impressions) as impressions,
+             ROUND(IFNULL(payout_rate/1000000,0),2) as payout_rate,
              TRUNCATE((sum(cost) / 1000000),2) as cost,
              TRUNCATE((sum(earned) / 1000000),2) as earned,
              TRUNCATE(( sum(cost) / 1000000 ) / sum(profile),2) as actual_cpa,
@@ -150,7 +151,7 @@ class CampaignController extends Controller {
              sum(upgrade) as upgrades,
              ad_groups.status")
             ->join('stats_ad_groups', 'ad_groups.id', '=', 'stats_ad_groups.ad_group_id')
-            ->join('campaigns','ad_groups.campaign_id','=','campaigns.id')
+            ->join('campaigns', 'ad_groups.campaign_id', '=', 'campaigns.id')
             ->where('ad_groups.campaign_id', '=', $campaign->id)
             ->when(!empty($request->input('name')), function ($q) use ($request) {
                 $q->where('name', 'LIKE', "%" . $request->input('name') . "%");
