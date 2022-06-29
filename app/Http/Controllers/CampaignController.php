@@ -140,16 +140,15 @@ class CampaignController extends Controller {
              IFNULL(ROUND((sum(earned) / 1000000) / sum(upgrade),2),0) as actual_eps,
              IFNULL(ROUND((sum(profile) / sum(clicks) * 100),2),0) as cr,
              IFNULL(ROUND( (sum(clicks) / sum(impressions) * 100 ),2),0) as ctr,
-              (
-             CASE
-                WHEN campaigns.payout_rate IS NULL
-                THEN 'test'
-                ELSE ROUND((campaigns.payout_rate/1000000) / sum(upgrade)/sum(clicks),2)
-             END
-             ) AS target_cpa,
              sum(profile) as profiles,
              sum(upgrade) as upgrades,
              ad_groups.status")
+            ->when(in_array($adPlatform, [ 'google', 'gemini' ]), function ($q) {
+                $q->addSelect(DB::raw('ROUND((sum(earned) / 1000000) / sum(profile) ,2) as target_cpa'));
+            })
+            ->when($adPlatform == 'bing', function ($q) {
+                $q->addSelect(DB::raw('ROUND((sum(earned) / 1000000) / sum(clicks) ,2) as target_cpa'));
+            })
             ->join('stats_ad_groups', 'ad_groups.id', '=', 'stats_ad_groups.ad_group_id')
             ->join('campaigns', 'ad_groups.campaign_id', '=', 'campaigns.id')
             ->where('ad_groups.campaign_id', '=', $campaign->id)

@@ -79,7 +79,6 @@ class GetAdGroups implements ShouldQueue {
             for ( $i = 0; $i < count($chunk); $i ++ )
             {
                 $data[$i] = AdWordManagement::response($this->client->getConnectionName())->adGroup($chunk[$i]);
-
             }
 
             AdGroup::on($this->client->getConnectionName())->upsert($data, [ 'id' ], array_keys($data[0]));
