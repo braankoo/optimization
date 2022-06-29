@@ -126,7 +126,7 @@
                     </b-input-group>
                 </template>
                 <template #cell(target_cpa)="data">
-                    {{ data.item.target_cpa == null ? 'Payout rate missing' : data.item.target_cpa }}
+                    {{ data.item.target_cpa == null ? 'No data' : data.item.target_cpa }}
                 </template>
                 <template #cell(status)="data">
                     <b-form-checkbox switch size="lg"/>
