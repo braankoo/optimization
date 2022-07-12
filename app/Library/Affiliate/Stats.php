@@ -3,12 +3,9 @@
 namespace App\Library\Affiliate;
 
 
-use App\Models\Ad;
 use App\Models\AdGroup;
-use Fbmaff\Api\Exceptions\ApiException;
 use Fbmaff\Client\ApiClient;
 use Fbmaff\Api;
-
 use Fbmaff\Transport;
 use Fbmaff\Auth;
 
@@ -195,7 +192,7 @@ class Stats {
      */
     private function checkIfAdGroupExistsByName(string $name): bool
     {
-        return Ad::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->exists();
+        return AdGroup::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->exists();
     }
 
 }
