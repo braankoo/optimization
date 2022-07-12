@@ -110,7 +110,9 @@ class Stats {
                 && (
                     preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup'])
                     || (
-                        $this->adPlatform =='google' && preg_match('/(Exact|Broad|Phrase) - Search/', $row['adgroup'])
+                        $this->adPlatform == 'google'
+                        && preg_match('/(Exact|Broad|Phrase) - Search/', $row['adgroup'])
+                        && $this->checkIfAdGroupExistsByName($row['adgroup'])
                     )
                 );
         });
@@ -185,6 +187,15 @@ class Stats {
     private function findAdGroupByName(string $name): int
     {
         return AdGroup::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->first()->id;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    private function checkIfAdGroupExistsByName(string $name): bool
+    {
+        return Ad::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->exists();
     }
 
 }
