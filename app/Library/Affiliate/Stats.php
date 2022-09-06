@@ -8,6 +8,7 @@ use Fbmaff\Client\ApiClient;
 use Fbmaff\Api;
 use Fbmaff\Transport;
 use Fbmaff\Auth;
+use App\Models\Ad;
 
 class Stats {
 
