@@ -107,11 +107,6 @@ class Stats {
                 )
                 && (
                     preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup'])
-                    || (
-                        $this->adPlatform == 'google'
-                        && preg_match('/(Exact|Broad|Phrase) - Search/', $row['adgroup'])
-                        && $this->checkIfAdGroupExistsByName($row['adgroup'])
-                    )
                 );
         });
 
@@ -120,9 +115,6 @@ class Stats {
             if (preg_match("/(?<=$this->regexp:).\d+/", $row['adgroup'], $adGroup))
             {
                 $adGroup = $this->findAdGroupId($adGroup[0]);
-            } else
-            {
-                $adGroup = $this->findAdGroupByName($row['adgroup']);
             }
 
             return [
@@ -187,13 +179,5 @@ class Stats {
         return AdGroup::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->first()->id;
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    private function checkIfAdGroupExistsByName(string $name): bool
-    {
-        return AdGroup::on($this->adPlatform)->where('name', 'LIKE', $name . '%')->exists();
-    }
 
 }
