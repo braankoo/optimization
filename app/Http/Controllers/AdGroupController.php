@@ -26,7 +26,7 @@ class AdGroupController extends Controller {
         $data = DB::connection($adPlatform)->table('ad_groups')->selectRaw(
             "
              ad_groups.name as name,
-             TRUNCATE(bid/1000000,2) as bid,
+             TRUNCATE(IF(cpa IS NOT NULL, cpa, cpc)/1000000,2) as bid,
              ad_groups.id as id,
              sum(clicks) as clicks,
              sum(impressions) as impressions,
